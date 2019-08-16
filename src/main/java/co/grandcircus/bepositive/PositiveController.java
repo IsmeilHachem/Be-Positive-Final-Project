@@ -39,7 +39,7 @@ public class PositiveController {
 		DocumentResponse response = apiService.search(text);
 		System.out.println(response);
 		if (response != null) {
-			mv.addObject("responses", response.getDocTone());
+			mv.addObject("responses", response.getDocTone().getTones());
 		} else {
 			mv.addObject("error", "Sorry, no messages for you.");
 		}
