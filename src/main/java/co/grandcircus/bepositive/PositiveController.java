@@ -17,13 +17,18 @@ public class PositiveController {
 	@RequestMapping("/")
 	public ModelAndView showHome() {
 
-		return new ModelAndView("main");
+		return new ModelAndView("redirect:/index");
+	}
+	
+	@RequestMapping("/index")
+	public ModelAndView showIndex() {
+		return new ModelAndView("index");
 	}
 
 	@RequestMapping("/mainpage")
 	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text) {
 
-		ModelAndView mv = new ModelAndView("main");
+		ModelAndView mv = new ModelAndView("mainpage");
 		DocumentResponse response = apiService.search(text);
 		System.out.println(response);
 		if (response != null) {
