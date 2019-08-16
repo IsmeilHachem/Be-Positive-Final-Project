@@ -13,7 +13,7 @@
 		<input type="text" name="uname" placeholder="User name">
 		<input type="submit" value="login">
 	 </form> -->
-	<a href = "mainpage">Main page</a> 
+	<a href = "/mainpage-show">Main page</a> 
 	
 </body>
 </html>

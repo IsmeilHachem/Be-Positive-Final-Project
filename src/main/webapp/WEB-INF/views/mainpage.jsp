@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1>Welcome ${user.name}</h1>
-	<form action="/mainpage" method="post">
+	<form action="/api">
 		<textarea id = "myTextArea"
 			rows = "5"
 			cols = "50" name="post" placeholder="Speak Your Mind!"></textarea>

@@ -20,12 +20,14 @@ public class ApiService {
 			request.getHeaders().add(HttpHeaders.USER_AGENT, "Spring");
 			return execution.execute(request, body);
 		};
-		restTemplate = new RestTemplateBuilder().additionalInterceptors(interceptor).build();
+//		restTemplate = new RestTemplateBuilder().additionalInterceptors(interceptor).build();
+		restTemplate = new RestTemplateBuilder().additionalInterceptors(interceptor)
+				.basicAuthentication("apiKey", "n1vF_Yuwo7Nm89JfsVQd43mged9lSbqOQO8zes2alnPw").build();
 	}
 
 	public DocumentResponse search(String text) {
 
-		String url = "https://apiKey:n1vF_Yuwo7Nm89JfsVQd43mged9lSbqOQO8zes2alnPw@gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21"
+		String url = "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21"
 				+ (StringUtils.isEmpty(text) ? "" : "&text=" + URLEncoder.encode(text));
 		System.out.println(URLEncoder.encode(text));
 		System.out.println(url);
