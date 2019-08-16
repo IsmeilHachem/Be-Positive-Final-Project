@@ -9,10 +9,11 @@
 </head>
 <body>
 	<h1>Welcome to The World of Being Positive!</h1>
-	 <form action="/mainpage" method="post"> 
+	<!--   <form action="/mainpage" method="post"> 
 		<input type="text" name="uname" placeholder="User name">
 		<input type="submit" value="login">
-	 </form> 
+	 </form> -->
+	<a href = "mainpage">Main page</a> 
 	
 </body>
 </html>

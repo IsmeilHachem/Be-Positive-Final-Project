@@ -27,6 +27,8 @@ public class ApiService {
 
 		String url = "https://apiKey:n1vF_Yuwo7Nm89JfsVQd43mged9lSbqOQO8zes2alnPw@gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21"
 				+ (StringUtils.isEmpty(text) ? "" : "&text=" + URLEncoder.encode(text));
+		System.out.println(URLEncoder.encode(text));
+		System.out.println(url);
 		DocumentResponse searchResponse = null;
 		try {
 			searchResponse = restTemplate.getForObject(url, DocumentResponse.class);
