@@ -1,10 +1,14 @@
 package co.grandcircus.bepositive.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,30 +18,27 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
-	private Integer id;
+	private Integer userId;
 
 	@Column(name = "user_name")
 	private String name;
+
+	// https://medium.com/skillhive/how-to-retrieve-a-parent-field-from-a-child-entity-in-a-one-to-many-bidirectional-jpa-relationship-4b3cd707bfb7
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Post> posts;
 
 	public User() {
 
 	}
 
-	public User(Integer id, String name) {
+	public Integer getUserId() {
 
-		super();
-		this.id = id;
-		this.name = name;
+		return userId;
 	}
 
-	public Integer getId() {
+	public void setUserId(Integer userId) {
 
-		return id;
-	}
-
-	public void setId(Integer id) {
-
-		this.id = id;
+		this.userId = userId;
 	}
 
 	public String getName() {
