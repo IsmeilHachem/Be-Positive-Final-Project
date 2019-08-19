@@ -36,12 +36,12 @@ public class Post {
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 
-	public Integer getId() {
+	public Integer getPostId() {
 
 		return postId;
 	}
 
-	public void setId(Integer id) {
+	public void setPostId(Integer id) {
 
 		this.postId = id;
 	}

@@ -31,12 +31,12 @@ public class Comment {
 
 	private Date created;
 
-	public Integer getId() {
+	public Integer getCommentId() {
 
 		return commentId;
 	}
 
-	public void setId(Integer id) {
+	public void setCommentId(Integer id) {
 
 		this.commentId = id;
 	}
