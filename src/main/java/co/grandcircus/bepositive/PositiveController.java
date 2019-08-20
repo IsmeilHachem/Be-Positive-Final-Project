@@ -2,7 +2,6 @@ package co.grandcircus.bepositive;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -40,9 +39,6 @@ public class PositiveController {
 	@Autowired
 	HttpSession session;
 
-	@Autowired
-	Set<String> negativeTones;
-
 	@RequestMapping("/")
 	public ModelAndView home() {
 
@@ -59,7 +55,7 @@ public class PositiveController {
 			modelAndView.addObject("user", userName);
 		} else {
 			modelAndView = new ModelAndView("showposts");
-			modelAndView.addObject("posts", postRepo.findAll());
+			modelAndView.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
 			modelAndView.addObject("user", user);
 			session.setAttribute("user", user);
 		}
@@ -83,7 +79,7 @@ public class PositiveController {
 			post.setCreated(new Date());
 			postRepo.save(post);
 		}
-		mv.addObject("posts", postRepo.findAll());
+		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
 		return mv;
 	}
 
@@ -106,7 +102,7 @@ public class PositiveController {
 			comment.setPost(post);
 			commentRepo.save(comment);
 		}
-		mv.addObject("posts", postRepo.findAll());
+		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
 		return mv;
 	}
 
@@ -121,5 +117,12 @@ public class PositiveController {
 			}
 		}
 		return error;
+	}
+
+	@RequestMapping("/logout")
+	public ModelAndView logout() {
+
+		session.removeAttribute("user");
+		return new ModelAndView("redirect:/");
 	}
 }

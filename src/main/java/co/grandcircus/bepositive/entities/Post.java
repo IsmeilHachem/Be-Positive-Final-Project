@@ -87,4 +87,31 @@ public class Post {
 
 		this.comments = comments;
 	}
+
+	/*
+	 * if less than a minute display in seconds else if less than a hour display in
+	 * minutes else if less than a day display in hours else display in days
+	 *
+	 */
+	private static final int ONE_MIN = 60;
+
+	private static final int ONE_HOUR = ONE_MIN * 60;
+
+	private static final int ONE_DAY = ONE_HOUR * 24;
+
+	public String getElapsed() {
+
+		String returnValue = "";
+		long diffInSeconds = (System.currentTimeMillis() - getCreated().getTime()) / 1000;
+		if (diffInSeconds < ONE_MIN) {
+			returnValue = diffInSeconds + " sec";
+		} else if (diffInSeconds < ONE_HOUR) {
+			returnValue = diffInSeconds / ONE_MIN + " min";
+		} else if (diffInSeconds < ONE_DAY) {
+			returnValue = diffInSeconds / ONE_HOUR + " hour";
+		} else {
+			returnValue = diffInSeconds / ONE_DAY + " day";
+		}
+		return returnValue + "(s) ago";
+	}
 }

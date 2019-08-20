@@ -32,7 +32,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 offset-md-2">
-				<h1>Welcome ${user.getName()}</h1>
+				<c:if test="${sessionScope.user!= null}">
+					<h2>Welcome ${user.getName()}</h2>
+					<h4 style="text-align: right">
+						<a href="/logout">Logout</a>
+					</h4>
+				</c:if>
 				<c:if test="${not empty error}">
 					<div class="alert alert-danger" role="alert">${error}</div>
 				</c:if>
@@ -50,21 +55,9 @@
 				<c:forEach var="post" items="${posts}">
 					<div class="postDiv">
 						<p>${post.getUser().getName()}</p>
-						<jsp:useBean id="now" class="java.util.Date" scope="request" />
-						<fmt:parseNumber
-							value="${(now.time - otherDate.time) / (1000*60*60*24) }"
-							integerOnly="true" />
-						<fmt:parseNumber value="${ now.time / (1000*60*60*24) }"
-							integerOnly="true" var="nowDays" scope="request" />
-						<fmt:parseNumber value="${ otherDate.time / (1000*60*60*24) }"
-							integerOnly="true" var="otherDays" scope="page" />
-						<c:set value="${nowDays - otherDays}" var="dateDiff" />
-						<c:choose>
-							<c:when test="${dateDiff eq 0}">today</c:when>
-							<c:when test="${dateDiff eq 1}">yesterday</c:when>
-							<c:otherwise>${dateDiff} day(s) ago</c:otherwise>
-						</c:choose>
+						<p>${post.getElapsed()}</p>
 						<p>${post.getDescription()}</p>
+						
 						<form action="/showcomments">
 							<input type="hidden" name="postId" value="${post.getPostId()}" />
 							<input type=text name="comment" placeholder="Comment here!">
