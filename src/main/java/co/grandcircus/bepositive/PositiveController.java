@@ -67,11 +67,18 @@ public class PositiveController {
 
 		User user = (User) session.getAttribute("user");
 		ModelAndView mv = new ModelAndView("showposts");
+
 		DocumentResponse response = apiService.search(text);
+
 		List<Tone> tones = response.getDocTone().getTones();
-		if (isNotAcceptableTone(tones)) {
-			System.out.println("check");
-			mv.addObject("error", "It doesn't sound positive. Please post again.");
+
+		if ((isNotAcceptableTone(tones)) || (WordFilter.badwordfinder(text) == true)) {
+			mv.addObject("postError", "It doesn't sound positive.Please post again.");
+
+			System.out.println("hello" + WordFilter.badwordfinder(text));
+
+			// System.out.println("check");
+			// mv.addObject("error", "It doesn't sound positive. Please post again.");
 		} else {
 			Post post = new Post();
 			post.setDescription(text);
@@ -90,9 +97,10 @@ public class PositiveController {
 		ModelAndView mv = new ModelAndView("showposts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
-		if (isNotAcceptableTone(tones)) {
+
+		if ((isNotAcceptableTone(tones)) || (WordFilter.badwordfinder(text) == true)) {
 			System.out.println("check");
-			mv.addObject("error", "It doesn't sound positive. Please post again.");
+			mv.addObject("commentError", "It doesn't sound positive. Please comment again.");
 		} else {
 			Comment comment = new Comment();
 			comment.setDescription(text); //

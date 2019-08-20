@@ -38,8 +38,8 @@
 						<a href="/logout">Logout</a>
 					</h4>
 				</c:if>
-				<c:if test="${not empty error}">
-					<div class="alert alert-danger" role="alert">${error}</div>
+				<c:if test="${not empty postError}">
+					<div class="alert alert-danger" role="alert">${postError}</div>
 				</c:if>
 				<div class="postDiv">
 					<form action="/showposts">
@@ -50,13 +50,23 @@
 						<div>
 							<input type="submit" value="Post" class="btn btn-success">
 						</div>
+						
 					</form>
+					
+					
 				</div>
+				
+				<c:if test="${not empty commentError}">
+					<div class="alert alert-danger" role="alert">${commentError}</div>
+						</c:if>
+						
 				<c:forEach var="post" items="${posts}">
 					<div class="postDiv">
 						<p>${post.getUser().getName()}</p>
 						<p>${post.getElapsed()}</p>
 						<p>${post.getDescription()}</p>
+			
+						
 						
 						<form action="/showcomments">
 							<input type="hidden" name="postId" value="${post.getPostId()}" />
@@ -68,8 +78,13 @@
 								<p>${comment.getDescription()}</p>
 							</div>
 						</c:forEach>
+						
+						
+						
 					</div>
 				</c:forEach>
+				
+				
 			</div>
 		</div>
 	</div>

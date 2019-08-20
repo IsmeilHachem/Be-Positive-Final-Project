@@ -2,6 +2,8 @@ package co.grandcircus.bepositive;
 
 import java.net.URLEncoder;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +21,9 @@ public class ApiService {
 	private String watsonKey;
 
 	private RestTemplate restTemplate;
-	{
+
+	@PostConstruct
+	public void init() {
 		ClientHttpRequestInterceptor interceptor = (request, body, execution) -> {
 			request.getHeaders().add(HttpHeaders.USER_AGENT, "Spring");
 			return execution.execute(request, body);
