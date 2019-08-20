@@ -1,0 +1,166 @@
+@charset "ISO-8859-1";
+
+
+
+#bodyIndex{
+	/* Photo by Jonnathan Fonseca on Unsplash */
+	background: url(jonnathan-fonseca-K6zNduxy1xI-unsplash.jpg);  
+	background-repeat: no-repeat;
+  	background-size: 100% 175%;
+}
+
+/* Credit: 
+Background pattern from Toptal Subtle Patterns. 
+But found at https://www.transparenttextures.com/wavecut.html */
+
+#mainPageBG{
+	background: url(wavecut.png);  
+	background-color: #8edefd;
+
+}
+
+h1{
+	text-align:center;
+	font-family: 'Indie Flower', cursive;
+	font-weight: bold;  
+	font-size: 4em; 
+	
+	/* background: -webkit-linear-gradient(#fff53d, #fbff00);
+  	-webkit-background-clip: text;
+  	-webkit-text-fill-color: transparent; */
+	color:#fff53d; 
+}
+
+h2{
+	text-align:center;
+	font-family: 'Indie Flower', cursive;
+	font-weight: bold;  
+	font-size: 2.5em;
+}
+#centerBody{
+	margin: 2% ; 
+
+}
+#QuoteTransBox {
+	background: rgba(255, 255, 255, 0.8);
+	max-width: 100%; 
+	padding: 5%; 	
+}
+
+::-webkit-input-placeholder {
+    padding-top: 15%; 
+    text-align: center;
+}
+
+#UserTransBox {
+	background: rgba(255, 255, 255, 0.8);
+	max-width: 100%; 
+	padding: 3%;  
+}
+
+#myTextArea{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#button{
+ 	position: relative; 
+	top: 8px;
+	left: 450px; 
+	
+}
+
+#buttonLook{
+	background-color:#fff53d; 
+	border-radius: 50px;
+	-webkit-transition-duration: 0.4s; /* Safari */
+  	transition-duration: 0.4s;
+  	color: black; 
+}
+
+#buttonLook:hover {
+  background-color:#3dd8ff; 
+  color: white;
+}
+
+#quoMoveDown{
+	margin-top: 3%; 
+}
+
+
+#WelMoveDown{
+	margin-top: 6%;
+	
+	/* border-right: 1px ; 
+	border-left: 1px ;  */
+	
+	/* box-shadow: 1px 1px 4px 2px rgba(0,0,0,.3); */
+}
+
+#UsrMoveDown{
+	margin-top: 15%;
+	  
+}
+
+#totalTextArea{
+	margin-bottom: 15%; 
+}
+
+#loginCenter{
+	margin-top: 5%; 
+	margin-left: 40%; 
+	
+}
+
+#centerLogin{
+	margin-top: 15%; 
+	
+}
+
+#logout{
+	text-align: right; 
+	font-size: 1em;	  
+}
+
+#logout:link{ 
+	 color:white; 
+}
+
+#logout:a{ 
+	 color:white; 
+}
+
+#userWarning{
+	text-align: center; 
+	font-style: italic; 
+	color: white; 
+	padding-bottom: 1%; 
+}
+
+#userRow{
+	display: block; 
+}
+
+table th{
+	 font-weight: normal;
+	 line-height: 1;
+}
+
+img{
+	margin-right: 10px; 
+}
+
+/* Gradient transparent - color - transparent 
+https://css-tricks.com/examples/hrs/ */
+
+hr{
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+}
+
+#commentForm{
+	margin-top: 40px; 
+}
+
