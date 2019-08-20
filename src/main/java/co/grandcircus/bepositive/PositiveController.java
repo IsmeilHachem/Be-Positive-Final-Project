@@ -111,7 +111,7 @@ public class PositiveController {
 		boolean error = false;
 		for (Tone tone : tones) {
 			System.out.println(tone.getToneName());
-			if (tone.getToneName().equals("anger")) {
+			if (tone.getToneName().equalsIgnoreCase("anger")) {
 				error = true;
 				break;
 			}

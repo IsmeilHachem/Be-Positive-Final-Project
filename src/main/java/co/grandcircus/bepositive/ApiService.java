@@ -2,6 +2,7 @@ package co.grandcircus.bepositive;
 
 import java.net.URLEncoder;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -14,15 +15,17 @@ import co.grandcircus.bepositive.pojos.DocumentResponse;
 @Component
 public class ApiService {
 
+	@Value("${watsonKey}")
+	private String watsonKey;
+
 	private RestTemplate restTemplate;
 	{
 		ClientHttpRequestInterceptor interceptor = (request, body, execution) -> {
 			request.getHeaders().add(HttpHeaders.USER_AGENT, "Spring");
 			return execution.execute(request, body);
 		};
-//		restTemplate = new RestTemplateBuilder().additionalInterceptors(interceptor).build();
 		restTemplate = new RestTemplateBuilder().additionalInterceptors(interceptor)
-				.basicAuthentication("apiKey", "n1vF_Yuwo7Nm89JfsVQd43mged9lSbqOQO8zes2alnPw").build();
+				.basicAuthentication("apiKey", watsonKey).build();
 	}
 
 	public DocumentResponse search(String text) {
