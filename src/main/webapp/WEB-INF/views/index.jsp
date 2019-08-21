@@ -13,7 +13,24 @@
 
 <title>Login</title>
 </head>
-<body id="bodyIndex">
+<style>
+a:link, a:visited {
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: gray;
+}
+</style>
+
+
+
+
+<body class="bodyIndex">
 
 <div id="centerLogin">
 	<p id="userWarning"><c:if test="${not empty user}">${user} is not a valid user</c:if></p>
@@ -22,6 +39,10 @@
 		<input type="text" name="userName" placeholder="User name"> 
 		<input  type="submit"  value="login" class="btn btn-secondary btn-sm">
 	</form>
+</div>
+
+<div id="centerLogin">
+<p><label><a href="/signupUser">Do you need to sign up?</a></label></p>
 </div>
 	
 </body>

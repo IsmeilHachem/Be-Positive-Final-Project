@@ -2,11 +2,12 @@
 
 
 
-#bodyIndex{
+.bodyIndex{
 	/* Photo by Jonnathan Fonseca on Unsplash */
-	background: url(jonnathan-fonseca-K6zNduxy1xI-unsplash.jpg);  
+	background-image: url(jonnathan-fonseca-K6zNduxy1xI-unsplash.jpg);  
 	background-repeat: no-repeat;
-  	background-size: 100% 175%;
+    background-size: cover;
+  	
 }
 
 /* Credit: 

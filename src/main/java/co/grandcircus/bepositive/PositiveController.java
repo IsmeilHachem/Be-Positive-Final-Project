@@ -49,6 +49,23 @@ public class PositiveController {
 		return new ModelAndView("index");
 	}
 
+	@RequestMapping("/signupUser")
+	public ModelAndView showSignup() {
+		return new ModelAndView("sign-up");
+	}
+
+	@RequestMapping("/save-signup")
+	public ModelAndView submitSignup(User user, HttpSession session) {
+		// 1. Add to database
+		userRepo.save(user);
+
+		// 2. Add to session
+		session.setAttribute("user", user);
+
+		ModelAndView mv = new ModelAndView("signup-thanks");
+		return mv;
+	}
+
 	@PostMapping("/login")
 	public ModelAndView login(@RequestParam("userName") String userName, HttpSession session,
 			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
