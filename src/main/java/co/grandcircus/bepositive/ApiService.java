@@ -11,8 +11,10 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import co.grandcircus.bepositive.pojos.DocumentResponse;
+import co.grandcircus.bepositive.pojos.QuoteOfDay;
 
 @Component
 public class ApiService {
@@ -22,6 +24,9 @@ public class ApiService {
 
 	
 	private RestTemplate restTemplate;
+	
+	private RestTemplate restTemplateQuote = new RestTemplate();
+
 
 	@PostConstruct
 	public void init()
@@ -48,5 +53,19 @@ public class ApiService {
 			System.err.println(ex.getMessage());
 		}
 		return searchResponse;
+	}
+	
+	public QuoteOfDay getQuote() {
+		
+		String url = UriComponentsBuilder.fromHttpUrl("http://api.forismatic.com/api/1.0/")
+				.queryParam("method", "getQuote")
+				.queryParam("format", "json")
+				.queryParam("lang", "en").toUriString();		
+		
+		QuoteOfDay response = restTemplateQuote.getForObject(url, QuoteOfDay.class);
+		
+		return response;
+				
+				
 	}
 }

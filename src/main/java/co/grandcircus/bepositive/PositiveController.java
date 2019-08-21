@@ -19,6 +19,7 @@ import co.grandcircus.bepositive.entities.Comment;
 import co.grandcircus.bepositive.entities.Post;
 import co.grandcircus.bepositive.entities.User;
 import co.grandcircus.bepositive.pojos.DocumentResponse;
+import co.grandcircus.bepositive.pojos.QuoteOfDay;
 import co.grandcircus.bepositive.pojos.Tone;
 
 @Controller
@@ -59,6 +60,8 @@ public class PositiveController {
 			modelAndView.addObject("user", user);
 			session.setAttribute("user", user);
 		}
+		QuoteOfDay inspire = apiService.getQuote();
+        modelAndView.addObject("list", inspire);
 		return modelAndView;
 	}
 
