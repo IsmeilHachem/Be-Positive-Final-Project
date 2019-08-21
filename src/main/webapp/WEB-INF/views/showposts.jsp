@@ -13,11 +13,6 @@
 	href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap"
 	rel="stylesheet">
 <title>B+ve</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-	crossorigin="anonymous">
 <style type="text/css">
 .postDiv {
 	background-color: #fff;
@@ -31,6 +26,9 @@
 	border: 1px solid #ccc;
 	margin: 10px;
 	padding: 10px;
+}
+.tone-Analytical {
+	background-color: yellow;
 }
 </style>
 </head>
@@ -68,11 +66,23 @@
 				</c:if>
 				<c:forEach var="post" items="${posts}">
 					<div class="postDiv">
-						<table>
-							<th><img src="person.png" height="42" width="42" /></th>
+						<table style="width: 100%">
+							<th style="width: 50px"><img src="person.png" height="42" width="42" /></th>
 							<th>
 								<p>${post.getUser().getName()}</p>
 								<p>${post.getElapsed()}</p>
+							</th>
+							<th style="width: 25%">
+								<p>${post.getMaxTone()}</p>
+								<p>
+									<!-- https://getbootstrap.com/docs/4.3/components/progress/ -->
+									<c:set var="percent" value="${post.getMaxScore() * 100}" />
+								<div class="progress">
+									<div class="progress-bar tone-${post.getMaxTone()}" role="progressbar"
+										style="width:${percent}%" aria-valuenow="${percent}"
+										aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+								</p>
 							</th>
 						</table>
 						<hr />
