@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.grandcircus.bepositive.dao.CommentRepository;
@@ -49,26 +50,38 @@ public class PositiveController {
 	}
 
 	@PostMapping("/login")
-	public ModelAndView login(@RequestParam("userName") String userName) {
+	public ModelAndView login(@RequestParam("userName") String userName, HttpSession session,
+			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
 		ModelAndView modelAndView = null;
 		User user = userRepo.findByName(userName);
 		if (ObjectUtils.isEmpty(user)) {
 			modelAndView = new ModelAndView("index");
 			modelAndView.addObject("user", userName);
+
 		} else {
 			modelAndView = new ModelAndView("showposts");
 			modelAndView.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
 			modelAndView.addObject("user", user);
 			session.setAttribute("user", user);
+			if (quote == null) {
+				QuoteOfDay inspire = apiService.getQuote();
+				session.setAttribute("quote", inspire);
+				modelAndView.addObject("list", inspire);
+			} else {
+				modelAndView.addObject("list", quote);
+
+			}
+
 		}
-		QuoteOfDay inspire = apiService.getQuote();
-        modelAndView.addObject("list", inspire);
+
 		return modelAndView;
+
 	}
 
 	@PostMapping("/showposts")
-	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text) {
+	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text,
+			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
 		User user = (User) session.getAttribute("user");
 		ModelAndView mv = new ModelAndView("showposts");
@@ -86,13 +99,22 @@ public class PositiveController {
 			post.setMaxTone(toneWithHighestScore.getToneName());
 			postRepo.save(post);
 		}
+		if (quote == null) {
+			QuoteOfDay inspire = apiService.getQuote();
+			session.setAttribute("quote", inspire);
+			mv.addObject("list", inspire);
+		} else {
+			mv.addObject("list", quote);
+
+		}
 		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
 		return mv;
 	}
 
 	@PostMapping("/showcomments")
 	public ModelAndView submitCommentResponse(@RequestParam(value = "comment", required = true) String text,
-			@RequestParam(value = "postId", required = true) Integer postId) {
+			@RequestParam(value = "postId", required = true) Integer postId,
+			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
 		ModelAndView mv = new ModelAndView("showposts");
 		DocumentResponse response = apiService.search(text);
@@ -107,6 +129,14 @@ public class PositiveController {
 			post.setPostId(postId);
 			comment.setPost(post);
 			commentRepo.save(comment);
+		}
+		if (quote == null) {
+			QuoteOfDay inspire = apiService.getQuote();
+			session.setAttribute("quote", inspire);
+			mv.addObject("list", inspire);
+		} else {
+			mv.addObject("list", quote);
+
 		}
 		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
 		return mv;
@@ -149,6 +179,7 @@ public class PositiveController {
 	public ModelAndView logout() {
 
 		session.removeAttribute("user");
+		session.removeAttribute("quote");
 		return new ModelAndView("redirect:/");
 	}
 }

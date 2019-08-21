@@ -63,7 +63,6 @@ public class ApiService {
 		QuoteOfDay response = restTemplateQuote.getForObject(url, QuoteOfDay.class);
 		
 		return response;
-				
-				
+						
 	}
 }

@@ -12,6 +12,8 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap"
 	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <title>B+ve</title>
 <style type="text/css">
 .postDiv {
@@ -35,21 +37,29 @@
 </head>
 <!-- style="background-color: #ccc" -->
 <body id="mainPageBG">
+	<nav class="navbar navbar-dark" style="background-color: darkblue;">
+		<span class="navbar-brand mb-0 h1">Welcome ${user.getName()}</span>
+		<c:if test="${sessionScope.user!= null}">
+			<h4 id="logout">
+				<a href="/logout">Logout</a>
+			</h4>
+		</c:if>
+		<!-- <form class="form-inline">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</form> -->
+	</nav>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-1" id="quoMoveDown">
+			<div class="col-sm-3" id="quoMoveDown">
 				<h2>Quote</h2>
-				<p>${list.quoteText}</p>
-				<p>${list.quoteAuthor}</p>
+				<blockquote class="blockquote">
+					<p>${list.quoteText}</p>
+					<p>${list.quoteAuthor}</p>
+				</blockquote>
 			</div>
-			<div class="col-sm-6 offset-md-2 ">
-				<c:if test="${sessionScope.user!= null}">
-					<h2>Welcome ${user.getName()}</h2>
-					<h4 id="logout">
-						<a href="/logout">Logout</a>
-					</h4>
-
-				</c:if>
+			<div class="col-sm-6">
 				<c:if test="${not empty postError}">
 					<div class="alert alert-danger" role="alert">${postError}</div>
 				</c:if>
@@ -108,7 +118,7 @@
 					</div>
 				</c:forEach>
 			</div>
-			<div class="col-sm-1" id="quoMoveDown">
+			<div class="col-sm-3" id="quoMoveDown">
 				<h2>Something</h2>
 				<p>Something</p>
 			</div>

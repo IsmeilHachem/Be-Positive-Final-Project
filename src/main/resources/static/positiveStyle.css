@@ -19,6 +19,10 @@ But found at https://www.transparenttextures.com/wavecut.html */
 
 }
 
+#navBar{
+	color: green;
+}
+
 h1{
 	text-align:center;
 	font-family: 'Indie Flower', cursive;
@@ -62,6 +66,7 @@ h2{
 	display: block;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
 }
 
 #button{
@@ -85,9 +90,15 @@ h2{
 }
 
 #quoMoveDown{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-variant: small-caps;
+	letter-spacing: 1px;
+	word-spacing: 2px;
+	text-transform: capitalize;
+	text-align: left;
+	color: #e567ab;
 	margin-top: 3%;
-	
-	width: 500px;
+	width: 400px;
 	height: 200px; 
 }
 
