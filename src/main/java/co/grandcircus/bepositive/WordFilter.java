@@ -8,9 +8,7 @@ public class WordFilter {
 	public static boolean badwordfinder(String words) {
 
 		boolean flag = false;
-
 		Set<String> wordSet = new HashSet<String>();
-
 		wordSet.add("anal");
 		wordSet.add("ass");
 		wordSet.add("ball sucking");
@@ -49,18 +47,12 @@ public class WordFilter {
 		wordSet.add("suck");
 		wordSet.add("tits");
 		wordSet.add("titties");
-
 		words = words.toLowerCase();
-
 		for (String s : wordSet) {
-
 			if (words.contains(s)) {
 				flag = true;
-
 			}
 		}
-
 		return flag;
 	}
-
 }

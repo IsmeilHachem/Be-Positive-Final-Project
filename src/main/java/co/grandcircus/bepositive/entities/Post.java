@@ -36,6 +36,12 @@ public class Post {
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 
+	@Column(name = "max_score")
+	private Double maxScore;
+
+	@Column(name = "max_tone")
+	private String maxTone;
+
 	public Integer getPostId() {
 
 		return postId;
@@ -44,6 +50,26 @@ public class Post {
 	public void setPostId(Integer id) {
 
 		this.postId = id;
+	}
+
+	public Double getMaxScore() {
+
+		return maxScore;
+	}
+
+	public void setMaxScore(Double maxScore) {
+
+		this.maxScore = maxScore;
+	}
+
+	public String getMaxTone() {
+
+		return maxTone;
+	}
+
+	public void setMaxTone(String maxTone) {
+
+		this.maxTone = maxTone;
 	}
 
 	public String getDescription() {
