@@ -22,16 +22,14 @@ public class ApiService {
 	@Value("${watsonKey}")
 	private String watsonKey;
 
-	
+
 	private RestTemplate restTemplate;
 	
 	private RestTemplate restTemplateQuote = new RestTemplate();
 
 
 	@PostConstruct
-	public void init()
-	{
-
+	public void init() {
 		ClientHttpRequestInterceptor interceptor = (request, body, execution) -> {
 			request.getHeaders().add(HttpHeaders.USER_AGENT, "Spring");
 			return execution.execute(request, body);

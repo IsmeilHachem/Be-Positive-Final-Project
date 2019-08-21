@@ -41,4 +41,10 @@ public class Tone {
 
 		this.toneName = toneName;
 	}
+
+	@Override
+	public String toString() {
+
+		return "{Tone Id: " + getToneId() + ", Name: " + getToneName() + ", Score:" + getScore() + "}";
+	}
 }
