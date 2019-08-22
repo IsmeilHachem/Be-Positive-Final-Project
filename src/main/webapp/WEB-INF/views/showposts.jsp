@@ -31,7 +31,27 @@
 }
 
 .tone-Analytical {
+	background-color: royalblue;
+}
+
+.tone-Joy {
 	background-color: yellow;
+}
+
+.tone-Sadness {
+	background-color: #6588ba;
+}
+
+.tone-Fear {
+	background-color: green;
+}
+
+.tone-Tentative {
+	background-color: turquoise;
+}
+
+.tone-Confident {
+	background-color: purple;
 }
 </style>
 </head>
@@ -56,7 +76,7 @@
 				<h2>Quote</h2>
 				<blockquote class="blockquote">
 					<p>${list.quoteText}</p>
-					<p>${list.quoteAuthor}</p>
+					<p>- ${list.quoteAuthor}</p>
 				</blockquote>
 			</div>
 			<div class="col-sm-6">
@@ -104,10 +124,15 @@
 						<p>${post.getDescription()}</p>
 						<div id="commentForm">
 							<form action="/showcomments" method="post">
-								<input type="hidden" name="postId" value="${post.getPostId()}" />
-								<input type=text name="comment" placeholder="Comment here!">
-								<input type="submit" value="Comment"
-									class="btn btn-warning btn-sm">
+								<div>
+									<input type="hidden" name="postId" value="${post.getPostId()}" />
+									<input type=text name="comment" style="width: 100%"
+										placeholder="Comment here!">
+								</div>
+								<div id="button">
+									<input type="submit" value="Comment"
+										class="btn btn-warning btn-sm">
+								</div>
 							</form>
 						</div>
 						<c:forEach var="comment" items="${post.getComments()}">
@@ -119,8 +144,24 @@
 				</c:forEach>
 			</div>
 			<div class="col-sm-3" id="quoMoveDown">
-				<h2>Something</h2>
-				<p>Something</p>
+				<table style="width: 200px">
+					<tr>
+						<td colspan=2><h6>User Tone Analysis Report</h6></td>
+					</tr>
+					<c:forEach var="toneSummary" items="${toneSummaries}">
+						<tr>
+							<td>${toneSummary.getTone()}</td>
+							<td style="width: 100px"><c:set var="tonePercent"
+									value="${toneSummary.getAverage() * 100}" />
+								<div class="progress">
+									<div class="progress-bar tone-${toneSummary.getTone()}"
+										role="progressbar" style="width:${tonePercent}%"
+										aria-valuenow="${tonePercent}" aria-valuemin="0"
+										aria-valuemax="100"></div>
+								</div></td>
+						</tr>
+					</c:forEach>
+				</table>
 			</div>
 		</div>
 	</div>

@@ -16,7 +16,7 @@ But found at https://www.transparenttextures.com/wavecut.html */
 
 #mainPageBG{
 	background: url(wavecut.png);  
-	background-color: #8edefd;
+	background-color: #c5ebfa;
 
 }
 
@@ -70,11 +70,9 @@ h2{
     width: 100%;
 }
 
-#button{
+#button {
  	position: relative; 
 	top: 8px;
-	left: 450px; 
-	
 }
 
 #buttonLook{

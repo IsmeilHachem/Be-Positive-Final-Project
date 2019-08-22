@@ -2,7 +2,9 @@ package co.grandcircus.bepositive;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +22,7 @@ import co.grandcircus.bepositive.dao.PostRepository;
 import co.grandcircus.bepositive.dao.UserRepository;
 import co.grandcircus.bepositive.entities.Comment;
 import co.grandcircus.bepositive.entities.Post;
+import co.grandcircus.bepositive.entities.ToneSummary;
 import co.grandcircus.bepositive.entities.User;
 import co.grandcircus.bepositive.pojos.DocumentResponse;
 import co.grandcircus.bepositive.pojos.QuoteOfDay;
@@ -51,17 +54,17 @@ public class PositiveController {
 
 	@RequestMapping("/signupUser")
 	public ModelAndView showSignup() {
+
 		return new ModelAndView("sign-up");
 	}
 
 	@RequestMapping("/save-signup")
 	public ModelAndView submitSignup(User user, HttpSession session) {
+
 		// 1. Add to database
 		userRepo.save(user);
-
 		// 2. Add to session
 		session.setAttribute("user", user);
-
 		ModelAndView mv = new ModelAndView("signup-thanks");
 		return mv;
 	}
@@ -75,10 +78,9 @@ public class PositiveController {
 		if (ObjectUtils.isEmpty(user)) {
 			modelAndView = new ModelAndView("index");
 			modelAndView.addObject("user", userName);
-
 		} else {
 			modelAndView = new ModelAndView("showposts");
-			modelAndView.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
+			loadPage(modelAndView, user);
 			modelAndView.addObject("user", user);
 			session.setAttribute("user", user);
 			if (quote == null) {
@@ -87,27 +89,31 @@ public class PositiveController {
 				modelAndView.addObject("list", inspire);
 			} else {
 				modelAndView.addObject("list", quote);
-
 			}
-
 		}
-
 		return modelAndView;
-
 	}
 
 	@PostMapping("/showposts")
 	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text,
 			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
+		Post post = new Post();
 		User user = (User) session.getAttribute("user");
 		ModelAndView mv = new ModelAndView("showposts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
+		System.out.println(tones);
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			mv.addObject("postError", "It doesn't sound positive. Please post again.");
+		} else if (tones.isEmpty()) {
+			post.setDescription(text);
+			post.setUser(user);
+			post.setCreated(new Date());
+			post.setMaxScore(0.5);
+			post.setMaxTone("Tentative");
+			postRepo.save(post);
 		} else {
-			Post post = new Post();
 			post.setDescription(text);
 			post.setUser(user);
 			post.setCreated(new Date());
@@ -122,10 +128,28 @@ public class PositiveController {
 			mv.addObject("list", inspire);
 		} else {
 			mv.addObject("list", quote);
-
 		}
-		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
+		loadPage(mv, user);
 		return mv;
+	}
+
+	private void loadPage(ModelAndView mv, User user) {
+
+		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
+		List<Post> posts = postRepo.findByUser(user);
+		Map<String, ToneSummary> toneSummaryMap = new HashMap<>();
+		for (Post post : posts) {
+			ToneSummary toneSummary = null;
+			if (toneSummaryMap.containsKey(post.getMaxTone())) {
+				toneSummary = toneSummaryMap.get(post.getMaxTone());
+			} else {
+				toneSummary = new ToneSummary(post.getMaxTone());
+			}
+			toneSummary.incrementCount();
+			toneSummary.addToScore(post.getMaxScore());
+			toneSummaryMap.put(post.getMaxTone(), toneSummary);
+		}
+		mv.addObject("toneSummaries", toneSummaryMap.values());
 	}
 
 	@PostMapping("/showcomments")
@@ -133,10 +157,11 @@ public class PositiveController {
 			@RequestParam(value = "postId", required = true) Integer postId,
 			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
+		User user = (User) session.getAttribute("user");
 		ModelAndView mv = new ModelAndView("showposts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
-		if ((isNotAcceptableTone(tones)) || (WordFilter.badwordfinder(text) == true)) {
+		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			mv.addObject("commentError", "It doesn't sound positive. Please comment again.");
 		} else {
 			Comment comment = new Comment();
@@ -153,9 +178,8 @@ public class PositiveController {
 			mv.addObject("list", inspire);
 		} else {
 			mv.addObject("list", quote);
-
 		}
-		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
+		loadPage(mv, user);
 		return mv;
 	}
 
