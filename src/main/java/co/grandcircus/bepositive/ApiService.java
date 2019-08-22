@@ -25,7 +25,7 @@ public class ApiService {
 
 	private RestTemplate restTemplate;
 	
-	private RestTemplate restTemplateQuote = new RestTemplate();
+	private RestTemplate restTemplateQuote;
 
 
 	@PostConstruct
@@ -36,6 +36,7 @@ public class ApiService {
 		};
 		restTemplate = new RestTemplateBuilder().additionalInterceptors(interceptor)
 				.basicAuthentication("apiKey", watsonKey).build();
+		restTemplateQuote = new RestTemplateBuilder().additionalInterceptors(interceptor).build();
 	}
 
 	public DocumentResponse search(String text) {
@@ -58,7 +59,7 @@ public class ApiService {
 		String url = UriComponentsBuilder.fromHttpUrl("http://api.forismatic.com/api/1.0/")
 				.queryParam("method", "getQuote")
 				.queryParam("format", "json")
-				.queryParam("lang", "en").toUriString();		
+				.queryParam("lang", "en").toUriString();
 		
 		QuoteOfDay response = restTemplateQuote.getForObject(url, QuoteOfDay.class);
 		
