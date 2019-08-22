@@ -126,6 +126,7 @@
 							<form action="/showcomments" method="post">
 								<div>
 									<input type="hidden" name="postId" value="${post.getPostId()}" />
+									<a href= "/deletepost?id=${post.getPostId()}">Delete</a>
 									<input type=text name="comment" style="width: 100%"
 										placeholder="Comment here!">
 								</div>

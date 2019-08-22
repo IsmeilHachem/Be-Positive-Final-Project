@@ -94,13 +94,42 @@ public class PositiveController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/posts")
+	public ModelAndView showResponse(@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
+		User user = (User) session.getAttribute("user");
+		ModelAndView mv = new ModelAndView("showposts");
+		if (quote == null) {
+			QuoteOfDay inspire = apiService.getQuote();
+			session.setAttribute("quote", inspire);
+			mv.addObject("list", inspire);
+		} else {
+			mv.addObject("list", quote);
+		}
+		List<Post> posts = postRepo.findByUser(user);
+		Map<String, ToneSummary> toneSummaryMap = new HashMap<>();
+		for (Post post : posts) {
+			ToneSummary toneSummary = null;
+			if (toneSummaryMap.containsKey(post.getMaxTone())) {
+				toneSummary = toneSummaryMap.get(post.getMaxTone());
+			} else {
+				toneSummary = new ToneSummary(post.getMaxTone());
+			}
+			toneSummary.incrementCount();
+			toneSummary.addToScore(post.getMaxScore());
+			toneSummaryMap.put(post.getMaxTone(), toneSummary);
+		}
+		mv.addObject("toneSummaries", toneSummaryMap.values());
+
+		loadPage(mv, user);
+		return mv;
+	}
+
 	@PostMapping("/showposts")
-	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text,
-			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
+	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text) {
 
 		Post post = new Post();
 		User user = (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView("showposts");
+		ModelAndView mv = new ModelAndView("redirect:/posts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
 		System.out.println(tones);
@@ -122,13 +151,7 @@ public class PositiveController {
 			post.setMaxTone(toneWithHighestScore.getToneName());
 			postRepo.save(post);
 		}
-		if (quote == null) {
-			QuoteOfDay inspire = apiService.getQuote();
-			session.setAttribute("quote", inspire);
-			mv.addObject("list", inspire);
-		} else {
-			mv.addObject("list", quote);
-		}
+
 		loadPage(mv, user);
 		return mv;
 	}
@@ -154,11 +177,10 @@ public class PositiveController {
 
 	@PostMapping("/showcomments")
 	public ModelAndView submitCommentResponse(@RequestParam(value = "comment", required = true) String text,
-			@RequestParam(value = "postId", required = true) Integer postId,
-			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
+			@RequestParam(value = "postId", required = true) Integer postId) {
 
 		User user = (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView("showposts");
+		ModelAndView mv = new ModelAndView("redirect:/posts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
@@ -171,13 +193,6 @@ public class PositiveController {
 			post.setPostId(postId);
 			comment.setPost(post);
 			commentRepo.save(comment);
-		}
-		if (quote == null) {
-			QuoteOfDay inspire = apiService.getQuote();
-			session.setAttribute("quote", inspire);
-			mv.addObject("list", inspire);
-		} else {
-			mv.addObject("list", quote);
 		}
 		loadPage(mv, user);
 		return mv;
@@ -222,5 +237,13 @@ public class PositiveController {
 		session.removeAttribute("user");
 		session.removeAttribute("quote");
 		return new ModelAndView("redirect:/");
+	}
+
+	@RequestMapping("/deletepost")
+	public ModelAndView remove(@RequestParam("id") Integer postId) {
+		// must delete comments first before deleting post. figure out a way around that
+		// shit.
+		postRepo.deleteById(postId);
+		return new ModelAndView("redirect:/posts");
 	}
 }
