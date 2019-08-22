@@ -131,6 +131,10 @@
 										placeholder="Comment here!">
 								</div>
 								<div id="button">
+								<a href="/showposts/upvote?id=${post.getPostId()}">
+								<img
+								src="1338-thumbs-up-sign.png" alt="Up" border=3 height=25
+								width=25 /></a>
 									<input type="submit" value="Comment"
 										class="btn btn-warning btn-sm">
 								</div>

@@ -43,6 +43,18 @@ public class Post {
 	@Column(name = "max_tone")
 	private String maxTone;
 
+	private Integer rating;
+
+	public Integer getRating() {
+
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+
+		this.rating = rating;
+	}
+
 	public Integer getPostId() {
 
 		return postId;

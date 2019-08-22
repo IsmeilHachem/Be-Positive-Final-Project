@@ -97,6 +97,7 @@ public class PositiveController {
 
 	@RequestMapping("/posts")
 	public ModelAndView showResponse(@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
+
 		User user = (User) session.getAttribute("user");
 		ModelAndView mv = new ModelAndView("showposts");
 		if (quote == null) {
@@ -120,13 +121,12 @@ public class PositiveController {
 			toneSummaryMap.put(post.getMaxTone(), toneSummary);
 		}
 		mv.addObject("toneSummaries", toneSummaryMap.values());
-
 		loadPage(mv, user);
 		return mv;
 	}
 
 	@PostMapping("/showposts")
-	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text, RedirectAttributes redir) {
+	public ModelAndView submitResponse(@RequestParam(value = "post") String text, RedirectAttributes redir) {
 
 		Post post = new Post();
 		User user = (User) session.getAttribute("user");
@@ -141,6 +141,7 @@ public class PositiveController {
 			post.setCreated(new Date());
 			post.setMaxScore(0.5);
 			post.setMaxTone("Tentative");
+			post.setRating(0);
 			postRepo.save(post);
 		} else {
 			post.setDescription(text);
@@ -149,9 +150,13 @@ public class PositiveController {
 			Tone toneWithHighestScore = getToneWithHighestScore(tones);
 			post.setMaxScore(toneWithHighestScore.getScore());
 			post.setMaxTone(toneWithHighestScore.getToneName());
+			if (post.getRating() == 0) {
+				post.setRating(0);
+			} else {
+				post.setRating(post.getRating() + 1);
+			}
 			postRepo.save(post);
 		}
-
 		return new ModelAndView("redirect:/posts");
 	}
 
@@ -228,6 +233,16 @@ public class PositiveController {
 		return tones.get(0);
 	}
 
+	@RequestMapping("/showposts/upvote")
+	public ModelAndView upvote(@RequestParam("id") Integer postId, @SessionAttribute("user") User user) {
+
+		ModelAndView modelAndView = new ModelAndView("showposts");
+		Post posts = postRepo.findById(postId).get();
+		posts.setRating(posts.getRating() + 1);
+		postRepo.save(posts);
+		return new ModelAndView("redirect:/posts");
+	}
+
 	@RequestMapping("/logout")
 	public ModelAndView logout() {
 
@@ -238,6 +253,7 @@ public class PositiveController {
 
 	@RequestMapping("/deletepost")
 	public ModelAndView remove(@RequestParam("id") Integer postId) {
+
 		postRepo.deleteById(postId);
 		return new ModelAndView("redirect:/posts");
 	}
