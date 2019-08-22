@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.grandcircus.bepositive.dao.CommentRepository;
 import co.grandcircus.bepositive.dao.PostRepository;
@@ -125,16 +126,15 @@ public class PositiveController {
 	}
 
 	@PostMapping("/showposts")
-	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text) {
+	public ModelAndView submitResponse(@RequestParam(value = "post", required = true) String text, RedirectAttributes redir) {
 
 		Post post = new Post();
 		User user = (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView("redirect:/posts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
 		System.out.println(tones);
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
-			mv.addObject("postError", "It doesn't sound positive. Please post again.");
+			redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
 		} else if (tones.isEmpty()) {
 			post.setDescription(text);
 			post.setUser(user);
@@ -152,8 +152,7 @@ public class PositiveController {
 			postRepo.save(post);
 		}
 
-		loadPage(mv, user);
-		return mv;
+		return new ModelAndView("redirect:/posts");
 	}
 
 	private void loadPage(ModelAndView mv, User user) {
@@ -177,14 +176,13 @@ public class PositiveController {
 
 	@PostMapping("/showcomments")
 	public ModelAndView submitCommentResponse(@RequestParam(value = "comment", required = true) String text,
-			@RequestParam(value = "postId", required = true) Integer postId) {
+			@RequestParam(value = "postId", required = true) Integer postId, RedirectAttributes redir) {
 
 		User user = (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView("redirect:/posts");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
-			mv.addObject("commentError", "It doesn't sound positive. Please comment again.");
+			redir.addFlashAttribute("commentError", "It doesn't sound positive. Please comment again.");
 		} else {
 			Comment comment = new Comment();
 			comment.setDescription(text); //
@@ -194,8 +192,7 @@ public class PositiveController {
 			comment.setPost(post);
 			commentRepo.save(comment);
 		}
-		loadPage(mv, user);
-		return mv;
+		return new ModelAndView("redirect:/posts");
 	}
 
 	private boolean isNotAcceptableTone(List<Tone> tones) {
@@ -241,8 +238,6 @@ public class PositiveController {
 
 	@RequestMapping("/deletepost")
 	public ModelAndView remove(@RequestParam("id") Integer postId) {
-		// must delete comments first before deleting post. figure out a way around that
-		// shit.
 		postRepo.deleteById(postId);
 		return new ModelAndView("redirect:/posts");
 	}
