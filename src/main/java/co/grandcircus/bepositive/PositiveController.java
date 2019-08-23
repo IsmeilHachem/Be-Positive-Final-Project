@@ -56,18 +56,38 @@ public class PositiveController {
 	@RequestMapping("/signupUser")
 	public ModelAndView showSignup() {
 
-		return new ModelAndView("sign-up");
+		return new ModelAndView("signup");
 	}
 
-	@RequestMapping("/save-signup")
-	public ModelAndView submitSignup(User user, HttpSession session) {
+	@PostMapping("/submitsignup")
+	public ModelAndView submitSignup(@RequestParam(value = "name", required = true) String name,
+			@RequestParam(value = "firstname", required = true) String firstName,
+			@RequestParam(value = "lastname", required = true) String lastName) {
 
+		ModelAndView modelAndView = null;
 		// 1. Add to database
-		userRepo.save(user);
-		// 2. Add to session
-		session.setAttribute("user", user);
-		ModelAndView mv = new ModelAndView("signup-thanks");
-		return mv;
+		if (name == "") {
+			modelAndView = new ModelAndView("signup");
+			modelAndView.addObject("error", "Please enter a username.");
+		} else if (firstName == "" || lastName == "") {
+			modelAndView = new ModelAndView("signup");
+			modelAndView.addObject("error", "Please enter your first and last name.");
+		} else if (userRepo.findByName(name) != null) {
+			modelAndView = new ModelAndView("signup");
+			modelAndView.addObject("error", "Username already exists.");
+		} else {
+			System.out.println(firstName);
+			System.out.println(lastName);
+			User user = new User();
+			user.setName(name);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			userRepo.save(user);
+			// 2. Add to session
+			session.setAttribute("user", user);
+			modelAndView = new ModelAndView("signupcomplete");
+		}
+		return modelAndView;
 	}
 
 	@PostMapping("/login")
@@ -125,7 +145,7 @@ public class PositiveController {
 		return mv;
 	}
 
-	@PostMapping("/showposts")
+	@PostMapping("/createposts")
 	public ModelAndView submitResponse(@RequestParam(value = "post") String text, RedirectAttributes redir) {
 
 		Post post = new Post();
@@ -179,7 +199,7 @@ public class PositiveController {
 		mv.addObject("toneSummaries", toneSummaryMap.values());
 	}
 
-	@PostMapping("/showcomments")
+	@PostMapping("/createcomments")
 	public ModelAndView submitCommentResponse(@RequestParam(value = "comment", required = true) String text,
 			@RequestParam(value = "postId", required = true) Integer postId, RedirectAttributes redir) {
 
@@ -233,7 +253,7 @@ public class PositiveController {
 		return tones.get(0);
 	}
 
-	@RequestMapping("/showposts/upvote")
+	@RequestMapping("/createposts/upvote")
 	public ModelAndView upvote(@RequestParam("id") Integer postId, @SessionAttribute("user") User user) {
 
 		ModelAndView modelAndView = new ModelAndView("showposts");

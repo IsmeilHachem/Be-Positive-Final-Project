@@ -5,45 +5,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"  href="positiveStyle.css"/> 
-<link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
-
-
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="positiveStyle.css" />
+<link
+	href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap"
+	rel="stylesheet">
 <title>Login</title>
 </head>
 <style>
 a:link, a:visited {
-  color: white;
-  padding: 14px 25px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
 }
 
 a:hover, a:active {
-  background-color: gray;
+	background-color: gray;
+}
+
+form {
+	display: inline-block;
 }
 </style>
-
-
-
-
 <body class="bodyIndex">
-
-<div id="centerLogin">
-	<p id="userWarning"><c:if test="${not empty user}">${user} is not a valid user</c:if></p>
-	<h1>Welcome to The World of Being Positive!</h1>
-	<form action="/login" method="post" id="loginCenter">
-		<input type="text" name="userName" placeholder="User name"> 
-		<input  type="submit"  value="login" class="btn btn-secondary btn-sm">
-	</form>
-</div>
-
-<div id="centerLogin">
-<p><label><a href="/signupUser">Do you need to sign up?</a></label></p>
-</div>
-	
+	<div id="centerLogin">
+		<p id="userWarning">
+			<c:if test="${not empty user}">${user} is not a valid user</c:if>
+		</p>
+		<h1>Welcome to The World of Being Positive!</h1>
+		<form action="/login" method="post" id="loginCenter">
+			<input type="text" name="userName" placeholder="User name"> <input
+				type="submit" value="Login" class="btn btn-secondary btn-sm">
+		</form>
+		<form action="/signupUser" method="post">
+			<input type="submit" value="SignUp" class="btn btn-secondary btn-sm">
+		</form>
+	</div>
 </body>
 </html>

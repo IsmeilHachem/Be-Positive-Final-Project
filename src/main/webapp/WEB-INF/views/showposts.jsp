@@ -84,7 +84,7 @@
 					<div class="alert alert-danger" role="alert">${postError}</div>
 				</c:if>
 				<div class="postDiv">
-					<form action="/showposts" method="post">
+					<form action="createposts" method="post">
 						<div>
 							<textarea id="myTextArea" rows="4" cols="65" name="post"
 								placeholder="Speak Your Mind!"></textarea>
@@ -123,7 +123,7 @@
 						<hr />
 						<p>${post.getDescription()}</p>
 						<div id="commentForm">
-							<form action="/showcomments" method="post">
+							<form action="/createcomments" method="post">
 								<div>
 									<input type="hidden" name="postId" value="${post.getPostId()}" />
 									<a href= "/deletepost?id=${post.getPostId()}">Delete</a>
@@ -131,7 +131,7 @@
 										placeholder="Comment here!">
 								</div>
 								<div id="button">
-								<a href="/showposts/upvote?id=${post.getPostId()}">
+								<a href="/createposts/upvote?id=${post.getPostId()}">
 								<img
 								src="1338-thumbs-up-sign.png" alt="Up" border=3 height=25
 								width=25 /></a>
