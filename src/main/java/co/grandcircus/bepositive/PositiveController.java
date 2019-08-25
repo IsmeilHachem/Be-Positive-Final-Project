@@ -23,7 +23,6 @@ import co.grandcircus.bepositive.dao.PostRepository;
 import co.grandcircus.bepositive.dao.UserRepository;
 import co.grandcircus.bepositive.entities.Comment;
 import co.grandcircus.bepositive.entities.Post;
-import co.grandcircus.bepositive.entities.ToneSummary;
 import co.grandcircus.bepositive.entities.User;
 import co.grandcircus.bepositive.pojos.DocumentResponse;
 import co.grandcircus.bepositive.pojos.QuoteOfDay;

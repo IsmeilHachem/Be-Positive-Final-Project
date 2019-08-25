@@ -149,6 +149,36 @@
 				</c:forEach>
 			</div>
 			<div class="col-sm-3" id="quoMoveDown">
+			<table border=1>
+			<tr>
+						<td>Tones</td>
+						<td>Description</td>
+					</tr>
+					<tr>
+					<td>Fear</td>
+					<td>Fear is a response to impending danger. It is a survival mechanism that is triggered as a reaction to some negative stimulus. Fear can be a mild caution or an extreme phobia. (An emotional tone.)</td>
+					<tr>
+					<td>Joy</td>
+					<td>Joy (or happiness) has shades of enjoyment, satisfaction, and pleasure. Joy brings a sense of well-being, inner peace, love, safety, and contentment. (An emotional tone.)
+					</td></tr>	
+					<tr>
+					<td>Sadness</td>
+					<td>Sadness indicates a feeling of loss and disadvantage. When a person is quiet, less energetic, and withdrawn, it can be inferred that they feel sadness. (An emotional tone.)
+					</td></tr>		
+					<tr>
+					<td>Analytical</td>
+					<td>An analytical tone indicates a person's reasoning and analytical attitude about things. An analytical person might be perceived as intellectual, rational, systematic, emotionless, or impersonal. (A language tone.)
+					</td></tr>		
+					<tr>
+					<td>Confident</td>
+					<td>A confident tone indicates a person's degree of certainty. A confident person might be perceived as assured, collected, hopeful, or egotistical. (A language tone.)
+					</td></tr>
+					<tr>
+					<td>Tentative</td>
+					<td>A tentative tone indicates a person's degree of inhibition. A tentative person might be perceived as questionable, doubtful, or debatable. (A language tone.)
+					</td>
+					</tr>					
+			</table>
 				<table style="width: 200px">
 					<tr>
 						<td colspan=2><h6>User Tone Analysis Report</h6></td>
