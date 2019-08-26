@@ -15,11 +15,14 @@
 </head>
 <style>
 a:link, a:visited {
-	color: white;
-	padding: 14px 25px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
+
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  
+
 }
 
 a:hover, a:active {

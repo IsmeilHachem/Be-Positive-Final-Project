@@ -1,58 +1,55 @@
 package co.grandcircus.bepositive;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.springframework.core.io.ClassPathResource;
 
 public class WordFilter {
 
 	public static boolean badwordfinder(String words) {
-
 		boolean flag = false;
-		Set<String> wordSet = new HashSet<String>();
-		wordSet.add("anal");
-		wordSet.add("ass");
-		wordSet.add("ball sucking");
-		wordSet.add("bastard");
-		wordSet.add("big tits");
-		wordSet.add("bitches");
-		wordSet.add("blowjob");
-		wordSet.add("blow job");
-		wordSet.add("boner");
-		wordSet.add("boob");
-		wordSet.add("boobs");
-		wordSet.add("bullshit");
-		wordSet.add("butthole");
-		wordSet.add("cock");
-		wordSet.add("cocks");
-		wordSet.add("cunt");
-		wordSet.add("faggot");
-		wordSet.add("asshole");
-		wordSet.add("fuck");
-		wordSet.add("fuckin");
-		wordSet.add("fucking");
-		wordSet.add("god damn");
-		wordSet.add("damn");
-		wordSet.add("bitch");
-		wordSet.add("hooker");
-		wordSet.add("nigger");
-		wordSet.add("jack off");
-		wordSet.add("motherfucker");
-		wordSet.add("penis");
-		wordSet.add("piece of shit");
-		wordSet.add("pussy");
-		wordSet.add("schlong");
-		wordSet.add("shit");
-		wordSet.add("slut");
-		wordSet.add("sucks");
-		wordSet.add("suck");
-		wordSet.add("tits");
-		wordSet.add("titties");
-		words = words.toLowerCase();
-		for (String s : wordSet) {
-			if (words.contains(s)) {
-				flag = true;
+
+		File csvFile = null;
+		try {
+			csvFile = new ClassPathResource("badWords.csv").getFile();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		if (csvFile.isFile()) {
+			// create BufferedReader and read data from csv
+			BufferedReader csvReader = null;
+			try {
+				csvReader = new BufferedReader(new FileReader(csvFile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			String row;
+
+			try {
+				while ((row = csvReader.readLine()) != null) {
+					String[] data = row.split(",");
+
+					for (String s : data) {
+						if (words.contains(s)) {
+							flag = true;
+						}
+					}
+
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 		return flag;
 	}
+
 }
