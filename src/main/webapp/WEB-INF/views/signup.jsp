@@ -12,24 +12,41 @@
 	href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap"
 	rel="stylesheet">
 <title>Sign Up</title>
+<style>
+table, tr, td {
+	padding: 5px
+}
+</style>
 </head>
 <body class="bodyIndex">
 	<c:if test="${not empty error}">
 		<div class="alert alert-danger" role="alert">${error}</div>
 	</c:if>
 	<h1>Sign Up!</h1>
-	<form action="/submitsignup" autocomplete="off" method="post">
-		<p>
-			<label>User Name</label> <input name="name" />
-		</p>
-		<p>
-			<label>First Name</label> <input name="firstname" />
-		</p>
-		<p>
-			<label>Last Name</label> <input name="lastname" />
-		</p>
-		<button type="submit">Sign Up</button>
-		
-	</form>
+	<br>
+	<div align="center">
+		<form action="/submitsignup" autocomplete="off" method="post">
+			<table>
+				<tr>
+					<td><label>User Name</label></td>
+					<td><input name="name" /></td>
+				</tr>
+				<tr>
+					<td><label>First Name</label></td>
+					<td><input name="firstname" /></td>
+				</tr>
+				<tr>
+					<td><label>Last Name</label></td>
+					<td><input name="lastname" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<button type="submit" class="btn btn-secondary btn-sm">Sign Up</button>
+						<a href ="/" class="btn btn-secondary btn-sm">Home</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </body>
 </html>

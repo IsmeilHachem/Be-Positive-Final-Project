@@ -21,12 +21,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import co.grandcircus.bepositive.dao.CommentRepository;
 import co.grandcircus.bepositive.dao.PostRepository;
 import co.grandcircus.bepositive.dao.UserRepository;
+import co.grandcircus.bepositive.dto.DocumentResponse;
+import co.grandcircus.bepositive.dto.QuoteOfDay;
+import co.grandcircus.bepositive.dto.Tone;
 import co.grandcircus.bepositive.entities.Comment;
 import co.grandcircus.bepositive.entities.Post;
 import co.grandcircus.bepositive.entities.User;
-import co.grandcircus.bepositive.pojos.DocumentResponse;
-import co.grandcircus.bepositive.pojos.QuoteOfDay;
-import co.grandcircus.bepositive.pojos.Tone;
 
 @Controller
 public class PositiveController {
@@ -155,27 +155,18 @@ public class PositiveController {
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
 		} else if (tones.isEmpty()) {
-			post.setDescription(text);
-			post.setUser(user);
-			post.setCreated(new Date());
 			post.setMaxScore(0.5);
 			post.setMaxTone("Tentative");
-			post.setRating(0);
-			postRepo.save(post);
 		} else {
-			post.setDescription(text);
-			post.setUser(user);
-			post.setCreated(new Date());
 			Tone toneWithHighestScore = getToneWithHighestScore(tones);
 			post.setMaxScore(toneWithHighestScore.getScore());
 			post.setMaxTone(toneWithHighestScore.getToneName());
-			if (post.getRating() == 0) {
-				post.setRating(0);
-			} else {
-				post.setRating(post.getRating() + 1);
-			}
-			postRepo.save(post);
 		}
+		post.setDescription(text);
+		post.setUser(user);
+		post.setCreated(new Date());
+		post.setRating(0);
+		postRepo.save(post);
 		return new ModelAndView("redirect:/posts");
 	}
 

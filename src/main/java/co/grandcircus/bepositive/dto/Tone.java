@@ -1,4 +1,4 @@
-package co.grandcircus.bepositive.pojos;
+package co.grandcircus.bepositive.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
