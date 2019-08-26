@@ -13,8 +13,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import co.grandcircus.bepositive.pojos.DocumentResponse;
-import co.grandcircus.bepositive.pojos.QuoteOfDay;
+import co.grandcircus.bepositive.dto.DocumentResponse;
+import co.grandcircus.bepositive.dto.QuoteOfDay;
 
 @Component
 public class ApiService {
@@ -22,14 +22,13 @@ public class ApiService {
 	@Value("${watsonKey}")
 	private String watsonKey;
 
-
 	private RestTemplate restTemplate;
-	
-	private RestTemplate restTemplateQuote;
 
+	private RestTemplate restTemplateQuote;
 
 	@PostConstruct
 	public void init() {
+
 		ClientHttpRequestInterceptor interceptor = (request, body, execution) -> {
 			request.getHeaders().add(HttpHeaders.USER_AGENT, "Spring");
 			return execution.execute(request, body);
@@ -53,17 +52,12 @@ public class ApiService {
 		}
 		return searchResponse;
 	}
-	
+
 	public QuoteOfDay getQuote() {
-		
+
 		String url = UriComponentsBuilder.fromHttpUrl("http://api.forismatic.com/api/1.0/")
-				.queryParam("method", "getQuote")
-				.queryParam("format", "json")
-				.queryParam("lang", "en").toUriString();
-		
+				.queryParam("method", "getQuote").queryParam("format", "json").queryParam("lang", "en").toUriString();
 		QuoteOfDay response = restTemplateQuote.getForObject(url, QuoteOfDay.class);
-		
 		return response;
-						
 	}
 }

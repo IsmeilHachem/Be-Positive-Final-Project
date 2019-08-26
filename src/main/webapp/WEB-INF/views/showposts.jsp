@@ -126,16 +126,14 @@
 							<form action="/createcomments" method="post">
 								<div>
 									<input type="hidden" name="postId" value="${post.getPostId()}" />
-									<a href= "/deletepost?id=${post.getPostId()}">Delete</a>
-									<input type=text name="comment" style="width: 100%"
+									<a href="/deletepost?id=${post.getPostId()}">Delete</a> <input
+										type=text name="comment" style="width: 100%"
 										placeholder="Comment here!">
 								</div>
 								<div id="button">
-								<a href="/createposts/upvote?id=${post.getPostId()}">
-								<img
-								src="1338-thumbs-up-sign.png" alt="Up" border=3 height=25
-								width=25 /></a>
-									<input type="submit" value="Comment"
+									<a href="/createposts/upvote?id=${post.getPostId()}"> <img
+										src="1338-thumbs-up-sign.png" alt="Up" border=3 height=25
+										width=25 /></a> <input type="submit" value="Comment"
 										class="btn btn-warning btn-sm">
 								</div>
 							</form>
@@ -149,9 +147,9 @@
 				</c:forEach>
 			</div>
 			<div class="col-sm-3" id="quoMoveDown">
-				<table style="width: 200px">
+				<table style="width: 100%">
 					<tr>
-						<td colspan=2><h6>User Tone Analysis Report</h6></td>
+						<td colspan=2><h2>User Tone Analysis Report</h2></td>
 					</tr>
 					<c:forEach var="toneSummary" items="${toneSummaries}">
 						<tr>
@@ -167,6 +165,8 @@
 						</tr>
 					</c:forEach>
 				</table>
+				<hr/>
+				<jsp:include page="glossary.jsp" />
 			</div>
 		</div>
 	</div>

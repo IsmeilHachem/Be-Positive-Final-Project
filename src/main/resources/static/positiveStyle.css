@@ -1,179 +1,166 @@
 @charset "ISO-8859-1";
 
-
-
-.bodyIndex{
+.bodyIndex {
 	/* Photo by Jonnathan Fonseca on Unsplash */
-	background-image: url(jonnathan-fonseca-K6zNduxy1xI-unsplash.jpg);  
+	background-image: url(jonnathan-fonseca-K6zNduxy1xI-unsplash.jpg);
 	background-repeat: no-repeat;
-    background-size: cover;
-  	
+	background-size: cover;
 }
 
 /* Credit: 
 Background pattern from Toptal Subtle Patterns. 
 But found at https://www.transparenttextures.com/wavecut.html */
-
-#mainPageBG{
-	background: url(wavecut.png);  
+#mainPageBG {
+	background: url(wavecut.png);
 	background-color: #c5ebfa;
-
 }
 
-#navBar{
+#navBar {
 	color: green;
 }
 
-h1{
-	text-align:center;
+h1 {
+	text-align: center;
 	font-family: 'Indie Flower', cursive;
-	font-weight: bold;  
-	font-size: 4em; 
-	
-	/* background: -webkit-linear-gradient(#fff53d, #fbff00);
-  	-webkit-background-clip: text;
-  	-webkit-text-fill-color: transparent; */
-	color:#fff53d; 
+	font-weight: bold;
+	font-size: 4em;
+	color: #fff53d;
 }
 
-h2{
-	text-align:center;
+h2 {
+	text-align: center;
 	font-family: 'Indie Flower', cursive;
-	font-weight: bold;  
+	font-weight: bold;
 	font-size: 2.5em;
 }
-#centerBody{
-	margin: 2% ; 
 
+#centerBody {
+	margin: 2%;
 }
+
+label {
+	font-family: 'Indie Flower', cursive;
+	font-weight: bold;
+	font-size: 1.5em;
+	color: #fff53d;
+}
+
 #QuoteTransBox {
 	background: rgba(255, 255, 255, 0.8);
-	max-width: 100%; 
-	padding: 5%; 	
+	max-width: 100%;
+	padding: 5%;
 }
 
 ::-webkit-input-placeholder {
-    padding-top: 15%; 
-    text-align: center;
+	padding-top: 15%;
+	text-align: center;
 }
 
 #UserTransBox {
 	background: rgba(255, 255, 255, 0.8);
-	max-width: 100%; 
-	padding: 3%;  
+	max-width: 100%;
+	padding: 3%;
 }
 
-#myTextArea{
+#myTextArea {
 	display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
 }
 
 #button {
- 	position: relative; 
+	position: relative;
 	top: 8px;
 }
 
-#buttonLook{
-	background-color:#fff53d; 
+#buttonLook {
+	background-color: #fff53d;
 	border-radius: 50px;
 	-webkit-transition-duration: 0.4s; /* Safari */
-  	transition-duration: 0.4s;
-  	color: black; 
+	transition-duration: 0.4s;
+	color: black;
 }
 
 #buttonLook:hover {
-  background-color:#3dd8ff; 
-  color: white;
+	background-color: #3dd8ff;
+	color: white;
 }
 
-#quoMoveDown{
+#quoMoveDown {
 	font-family: "Comic Sans MS", cursive, sans-serif;
-	font-variant: small-caps;
 	letter-spacing: 1px;
 	word-spacing: 2px;
-	text-transform: capitalize;
 	text-align: left;
 	color: #e567ab;
 	margin-top: 3%;
 	width: 400px;
-	height: 200px; 
+	height: 200px;
 }
 
-
-#WelMoveDown{
+#WelMoveDown {
 	margin-top: 6%;
-	
-	/* border-right: 1px ; 
-	border-left: 1px ;  */
-	
-	/* box-shadow: 1px 1px 4px 2px rgba(0,0,0,.3); */
 }
 
-#UsrMoveDown{
+#UsrMoveDown {
 	margin-top: 15%;
-	  
 }
 
-#totalTextArea{
-	margin-bottom: 15%; 
+#totalTextArea {
+	margin-bottom: 15%;
 }
 
-#loginCenter{
-	margin-top: 5%; 
-	margin-left: 40%; 
-	
+#loginCenter {
+	margin-top: 5%;
+	margin-left: 40%;
 }
 
-#centerLogin{
-	margin-top: 15%; 
-	
+#centerLogin {
+	margin-top: 15%;
 }
 
-#logout{
-	text-align: right; 
-	font-size: 1em;	  
+#logout {
+	text-align: right;
+	font-size: 1em;
 }
 
-#logout:link{ 
-	 color:white; 
+#logout:link {
+	color: white;
 }
 
-#logout:a{ 
-	 color:white; 
+#logout:a {
+	color: white;
 }
 
-#userWarning{
-	text-align: center; 
-	font-style: italic; 
-	color: white; 
-	padding-bottom: 1%; 
+#userWarning {
+	text-align: center;
+	font-style: italic;
+	color: white;
+	padding-bottom: 1%;
 }
 
-#userRow{
-	display: block; 
+#userRow {
+	display: block;
 }
 
-table th{
-	 font-weight: normal;
-	 line-height: 1;
+table th {
+	font-weight: normal;
+	line-height: 1;
 }
 
-img{
-	margin-right: 10px; 
+img {
+	margin-right: 10px;
 }
 
 /* Gradient transparent - color - transparent 
 https://css-tricks.com/examples/hrs/ */
-
-hr{
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+hr {
+	border: 0;
+	height: 1px;
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 }
 
-#commentForm{
-	margin-top: 40px; 
+#commentForm {
+	margin-top: 40px;
 }
-

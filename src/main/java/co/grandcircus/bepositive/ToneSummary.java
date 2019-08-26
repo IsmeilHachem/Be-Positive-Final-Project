@@ -1,4 +1,4 @@
-package co.grandcircus.bepositive.entities;
+package co.grandcircus.bepositive;
 
 public class ToneSummary {
 
