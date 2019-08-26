@@ -147,6 +147,7 @@ public class PositiveController {
 	@PostMapping("/createposts")
 	public ModelAndView submitResponse(@RequestParam(value = "post") String text, RedirectAttributes redir) {
 
+
 		Post post = new Post();
 		User user = (User) session.getAttribute("user");
 		DocumentResponse response = apiService.search(text);
@@ -205,7 +206,7 @@ public class PositiveController {
 			redir.addFlashAttribute("commentError", "It doesn't sound positive. Please comment again.");
 		} else {
 			Comment comment = new Comment();
-			comment.setDescription(text); //
+			comment.setDescription(text);
 			comment.setCreated(new Date());
 			Post post = new Post();
 			post.setPostId(postId);
@@ -266,10 +267,68 @@ public class PositiveController {
 		return new ModelAndView("redirect:/");
 	}
 
+
 	@RequestMapping("/deletepost")
 	public ModelAndView remove(@RequestParam("id") Integer postId) {
 
 		postRepo.deleteById(postId);
 		return new ModelAndView("redirect:/posts");
+
+	}
+
+	@RequestMapping("/editpost")
+	public ModelAndView showEdit(@RequestParam("id") Integer postId) {
+		ModelAndView mv = new ModelAndView("editpost");
+		mv.addObject("post", postRepo.findById(postId).orElse(null));
+		mv.addObject("title", "Edit post");
+		return mv;
+	}
+
+	@PostMapping("/editpost")
+	public ModelAndView edit(@RequestParam("postId") Integer postId, @RequestParam("post") String text,
+			RedirectAttributes redir) {
+		Post post = new Post();
+		User user = (User) session.getAttribute("user");
+		/* ModelAndView mv = new ModelAndView(); */
+		DocumentResponse response = apiService.search(text);
+		List<Tone> tones = response.getDocTone().getTones();
+
+//		Post post = postRepo.findByPostId(postId);
+		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
+			ModelAndView mv = new ModelAndView("editpost");
+			mv.addObject("postError", "It doesn't sound positive. Please post again.");
+
+			return mv;
+			
+		} else if (tones.isEmpty())  {
+			
+			post.setMaxScore(0.5);
+			post.setMaxTone("Tentative");
+			post.setDescription(text);
+			post.setUser(user);
+			post.setCreated(new Date());
+			post.setRating(0);
+			postRepo.save(post);
+//			post.setDescription(description);
+		
+		} else {
+			Tone toneWithHighestScore = getToneWithHighestScore(tones);
+			post.setMaxScore(toneWithHighestScore.getScore());
+			post.setMaxTone(toneWithHighestScore.getToneName());
+			post.setDescription(text);
+			post.setUser(user);
+			post.setCreated(new Date());
+			post.setRating(0);
+			postRepo.save(post);
+
+	}
+		
+		return new ModelAndView("redirect:/posts");
+
+	}
+
+	private void addObject(String string, String string2) {
+		// TODO Auto-generated method stub
+
 	}
 }

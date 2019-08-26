@@ -127,6 +127,7 @@ public class Post {
 		this.comments = comments;
 	}
 
+
 	/*
 	 * if less than a minute display in seconds else if less than a hour display in
 	 * minutes else if less than a day display in hours else display in days
