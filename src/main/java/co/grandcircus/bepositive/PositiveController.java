@@ -144,9 +144,6 @@ public class PositiveController {
 		return mv;
 	}
 
-	
-	
-	
 	@PostMapping("/createposts")
 	public ModelAndView submitResponse(@RequestParam(value = "post") String text, RedirectAttributes redir) {
 
@@ -156,29 +153,28 @@ public class PositiveController {
 		List<Tone> tones = response.getDocTone().getTones();
 		System.out.println(tones);
 
+		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
+			redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
+		} else if (tones.isEmpty()) {
+			post.setMaxScore(0.5);
+			post.setMaxTone("Tentative");
+			post.setDescription(text);
+			post.setUser(user);
+			post.setCreated(new Date());
+			post.setRating(0);
+			postRepo.save(post);
+		} else {
+			Tone toneWithHighestScore = getToneWithHighestScore(tones);
+			post.setMaxScore(toneWithHighestScore.getScore());
+			post.setMaxTone(toneWithHighestScore.getToneName());
+			post.setDescription(text);
+			post.setUser(user);
+			post.setCreated(new Date());
+			post.setRating(0);
+			postRepo.save(post);
+		}
 
-			if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
-				redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
-			} else if (tones.isEmpty()) {
-				post.setMaxScore(0.5);
-				post.setMaxTone("Tentative");
-				post.setDescription(text);
-				post.setUser(user);
-				post.setCreated(new Date());
-				post.setRating(0);
-				postRepo.save(post);
-			} else {
-				Tone toneWithHighestScore = getToneWithHighestScore(tones);
-				post.setMaxScore(toneWithHighestScore.getScore());
-				post.setMaxTone(toneWithHighestScore.getToneName());
-				post.setDescription(text);
-				post.setUser(user);
-				post.setCreated(new Date());
-				post.setRating(0);
-				postRepo.save(post);
-			}
-
-			return new ModelAndView("redirect:/posts");
+		return new ModelAndView("redirect:/posts");
 
 	}
 
@@ -273,7 +269,6 @@ public class PositiveController {
 		return new ModelAndView("redirect:/");
 	}
 
-
 	@RequestMapping("/deletepost")
 	public ModelAndView remove(@RequestParam("id") Integer postId) {
 
@@ -293,21 +288,22 @@ public class PositiveController {
 	@PostMapping("/editpost")
 	public ModelAndView edit(@RequestParam("postId") Integer postId, @RequestParam("post") String text,
 			RedirectAttributes redir) {
-		Post post = new Post();
+		// Post post = new Post();
 		User user = (User) session.getAttribute("user");
 		/* ModelAndView mv = new ModelAndView(); */
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
 
-//		Post post = postRepo.findByPostId(postId);
+		Post post = postRepo.findByPostId(postId);
+
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			ModelAndView mv = new ModelAndView("editpost");
 			mv.addObject("postError", "It doesn't sound positive. Please post again.");
 
 			return mv;
-			
-		} else if (tones.isEmpty())  {
-			
+
+		} else if (tones.isEmpty() || (tones == null)) {
+
 			post.setMaxScore(0.5);
 			post.setMaxTone("Tentative");
 			post.setDescription(text);
@@ -316,7 +312,7 @@ public class PositiveController {
 			post.setRating(0);
 			postRepo.save(post);
 //			post.setDescription(description);
-		
+
 		} else {
 			Tone toneWithHighestScore = getToneWithHighestScore(tones);
 			post.setMaxScore(toneWithHighestScore.getScore());
@@ -327,8 +323,8 @@ public class PositiveController {
 			post.setRating(0);
 			postRepo.save(post);
 
-	}
-		
+		}
+
 		return new ModelAndView("redirect:/posts");
 
 	}
