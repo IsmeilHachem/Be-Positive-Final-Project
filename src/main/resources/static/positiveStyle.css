@@ -172,3 +172,7 @@ hr {
 #commentForm {
 	margin-top: 40px;
 }
+
+#rating{
+	display: inline; 
+}

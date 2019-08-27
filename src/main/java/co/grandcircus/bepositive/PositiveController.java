@@ -144,36 +144,42 @@ public class PositiveController {
 		return mv;
 	}
 
+	
+	
+	
 	@PostMapping("/createposts")
 	public ModelAndView submitResponse(@RequestParam(value = "post") String text, RedirectAttributes redir) {
-
 
 		Post post = new Post();
 		User user = (User) session.getAttribute("user");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
 		System.out.println(tones);
-		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
-			redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
-		} else if (tones.isEmpty()) {
-			post.setMaxScore(0.5);
-			post.setMaxTone("Tentative");
-			post.setDescription(text);
-			post.setUser(user);
-			post.setCreated(new Date());
-			post.setRating(0);
-			postRepo.save(post);
-		} else {
-			Tone toneWithHighestScore = getToneWithHighestScore(tones);
-			post.setMaxScore(toneWithHighestScore.getScore());
-			post.setMaxTone(toneWithHighestScore.getToneName());
-			post.setDescription(text);
-			post.setUser(user);
-			post.setCreated(new Date());
-			post.setRating(0);
-			postRepo.save(post);
-		}
-		return new ModelAndView("redirect:/posts");
+
+
+			if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
+				redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
+			} else if (tones.isEmpty()) {
+				post.setMaxScore(0.5);
+				post.setMaxTone("Tentative");
+				post.setDescription(text);
+				post.setUser(user);
+				post.setCreated(new Date());
+				post.setRating(0);
+				postRepo.save(post);
+			} else {
+				Tone toneWithHighestScore = getToneWithHighestScore(tones);
+				post.setMaxScore(toneWithHighestScore.getScore());
+				post.setMaxTone(toneWithHighestScore.getToneName());
+				post.setDescription(text);
+				post.setUser(user);
+				post.setCreated(new Date());
+				post.setRating(0);
+				postRepo.save(post);
+			}
+
+			return new ModelAndView("redirect:/posts");
+
 	}
 
 	private void loadPage(ModelAndView mv, User user) {

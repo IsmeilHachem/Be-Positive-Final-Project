@@ -80,7 +80,7 @@
                     <form action="createposts" method="post">
                         <div>
                             <textarea id="myTextArea" rows="4" cols="65" name="post"
-                                placeholder="Speak Your Mind!"></textarea>
+                                placeholder="Speak Your Mind!" required></textarea>
                         </div>
                         <div id="button">
                             <input type="submit" value="Post" class="btn btn-warning">
@@ -124,13 +124,19 @@
                                     
                                     <input
                                         type=text name="comment" style="width: 100%"
-                                        placeholder="Comment here!">
+                                        placeholder="Comment here!" required>
                                 </div>
                                 <div id="button">
+                                
+                                	<p id="rating">${post.rating}</p>
+                               	
                                     <a href="/createposts/upvote?id=${post.getPostId()}"> <img
                                         src="1338-thumbs-up-sign.png" alt="Up" border=3 height=25
-                                        width=25 /></a> <input type="submit" value="Comment"
+                                        width=25 /></a> 
+                                        
+                                    <input type="submit" value="Comment"
                                         class="btn btn-warning btn-sm">
+                                     
                                 </div>
                             </form>
                         </div>
