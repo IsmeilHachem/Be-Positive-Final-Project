@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Tone {
 
-	private double score;
+	private Double score;
 
 	@JsonProperty("tone_id")
 	private String toneId;
@@ -17,7 +17,7 @@ public class Tone {
 		return score;
 	}
 
-	public void setScore(double score) {
+	public void setScore(Double score) {
 
 		this.score = score;
 	}

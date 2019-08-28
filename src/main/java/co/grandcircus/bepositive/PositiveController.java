@@ -292,7 +292,7 @@ public class PositiveController {
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			ModelAndView mv = new ModelAndView("editpost");
 			mv.addObject("postError", "It doesn't sound positive. Please post again.");
-
+			mv.addObject("post", postRepo.findById(postId).orElse(null));
 			return mv;
 
 		} else if (tones.isEmpty() || (tones == null)) {
@@ -326,4 +326,5 @@ public class PositiveController {
 		// TODO Auto-generated method stub
 
 	}
+
 }
