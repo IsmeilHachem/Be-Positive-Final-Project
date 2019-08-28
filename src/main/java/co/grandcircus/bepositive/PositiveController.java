@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Singleton;
 
 import co.grandcircus.bepositive.dao.CommentRepository;
 import co.grandcircus.bepositive.dao.PostRepository;
@@ -31,6 +36,9 @@ import co.grandcircus.bepositive.entities.User;
 
 @Controller
 public class PositiveController {
+	
+	@Value("{cloudinaryKey}")
+	private String cloudinaryKey;
 
 	@Autowired
 	ApiService apiService;
@@ -327,6 +335,58 @@ public class PositiveController {
 		return new ModelAndView("redirect:/posts");
 
 	}
+	
+	// This will run one time when the application starts up to configure cloudinary.
+    
+    @PostConstruct
+    public void init() {
+        Map<String, String> config = new HashMap<>();
+        config.put("cloud_name", "bepositive");
+        config.put("api_key", "449879741459621");
+        config.put("api_secret", cloudinaryKey);
+        Cloudinary cloudinary = new Cloudinary(config);
+        Singleton.registerCloudinary(cloudinary);
+    }
+    @RequestMapping("/uploadphoto")
+    public ModelAndView upload() {
+        return new ModelAndView("cloudinary/direct_upload_form");
+    }
+    @PostMapping("/uploadphoto")
+    public ModelAndView showPhoto(
+            RedirectAttributes redir, Object customCorsLocation, String imageId, String version,
+            @RequestParam("preloadedFile") String preloadedFile) throws Exception {
+        Post post = new Post();
+        User user = (User) session.getAttribute("user");
+        post.setUser(user);
+        post.setCreated(new Date());
+        
+        Cloudinary cloudinary = Singleton.getCloudinary();
+        System.out.println(post);
+        post.getImageId();
+        post.getVersion();
+        System.out.println("preloadedFile is " + preloadedFile);
+        String[] array = preloadedFile.split("/");
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);            
+        }
+        String[] id = array[3].split("#");
+        System.out.println(id[0]);
+        imageId = id[0];
+        version = array[2];
+        
+        
+        if (imageId == null || version == null) {
+            post.setImageId(imageId);
+            post.setVersion(version);
+            System.out.println(post);
+        }
+        
+        cloudinary.url().type("fetch").imageTag("http://res.cloudinary.com/bepositive/" + version + "/" + imageId + "/fetch");
+        postRepo.save(post);
+        
+        return new ModelAndView("redirect:/posts");
+        
+    }
 
 	private void addObject(String string, String string2) {
 		// TODO Auto-generated method stub

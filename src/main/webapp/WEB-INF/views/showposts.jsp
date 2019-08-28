@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://cloudinary.com/jsp/taglib" prefix="cl"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,6 +75,7 @@
                 <blockquote class="blockquote">
                     <p>${quote.quoteText}</p>
                     <p>- ${quote.quoteAuthor}</p>
+
                 </blockquote>
              </div>   
 				
@@ -97,6 +100,8 @@
                         </div>
                         <div id="button">
                             <input type="submit" value="Post" class="btn btn-warning">
+                            <a href= "/uploadphoto" >Upload Photo</a>
+                            
                         </div>
                     </form>
                 </div>
@@ -128,6 +133,10 @@
                         </table>
                         <hr />
                         <p>${post.getDescription()}</p>
+                        <c:if test="${not empty post.getImageId()}">
+                        <!-- add version then / then id -->
+							<cl:image src="http://res.cloudinary.com/bepositive/image/upload/v${post.getVersion()}/${post.getImageId()}.jpg"/>
+                        </c:if>
                         <div id="commentForm">
                             <form action="/createcomments" method="post">
                                 <div>
@@ -159,6 +168,7 @@
                                 <p id="commentDes">${comment.getDescription()}</p>
                                
                             </div>
+                            <a href="/deletecomment?id=${comment.getCommentId()}">Delete</a>
                         </c:forEach>
                     </div>
                 </c:forEach>

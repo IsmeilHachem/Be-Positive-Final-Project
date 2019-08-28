@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.cloudinary.StoredFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -44,6 +45,26 @@ public class Post {
 	private String maxTone;
 
 	private Integer rating;
+
+	private String imageId;
+
+	private String version;
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
+	}
 
 	public Integer getRating() {
 
@@ -127,6 +148,15 @@ public class Post {
 		this.comments = comments;
 	}
 
+	public StoredFile getUpload() {
+		StoredFile file = new StoredFile();
+		file.setPreloadedFile(imageId);
+		return file;
+	}
+
+	public void setUpload(StoredFile file) {
+		this.imageId = file.getPreloadedFile();
+	}
 
 	/*
 	 * if less than a minute display in seconds else if less than a hour display in
