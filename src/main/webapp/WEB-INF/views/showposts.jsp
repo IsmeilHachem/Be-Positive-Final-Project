@@ -75,9 +75,18 @@
 			<div class="col-sm-3" id="quoMoveDown">
 				<h2>Quote</h2>
 				<blockquote class="blockquote">
-					<p>${list.quoteText}</p>
-					<p>- ${list.quoteAuthor}</p>
+					<p>${quote.quoteText}</p>
+					<p>- ${quote.quoteAuthor}</p>
 				</blockquote>
+				<hr />
+				<h2>Follow Others to see their posts</h2>
+				<table>
+					<c:forEach var="otherUser" items="${otherUsers}">
+						<tr>
+							<td><a href="">${otherUser.getFirstName()}, ${otherUser.getLastName()}</a></td>
+						</tr>
+					</c:forEach>
+				</table>
 			</div>
 			<div class="col-sm-6">
 				<c:if test="${not empty postError}">
@@ -165,7 +174,7 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<hr/>
+				<hr />
 				<jsp:include page="glossary.jsp" />
 			</div>
 		</div>

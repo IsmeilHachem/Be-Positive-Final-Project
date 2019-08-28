@@ -1,5 +1,6 @@
 package co.grandcircus.bepositive;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,8 +76,6 @@ public class PositiveController {
 			modelAndView = new ModelAndView("signup");
 			modelAndView.addObject("error", "Username already exists.");
 		} else {
-			System.out.println(firstName);
-			System.out.println(lastName);
 			User user = new User();
 			user.setName(name);
 			user.setFirstName(firstName);
@@ -100,16 +99,9 @@ public class PositiveController {
 			modelAndView.addObject("user", userName);
 		} else {
 			modelAndView = new ModelAndView("showposts");
-			loadPage(modelAndView, user);
+			loadPage(modelAndView, user, quote);
 			modelAndView.addObject("user", user);
 			session.setAttribute("user", user);
-			if (quote == null) {
-				QuoteOfDay inspire = apiService.getQuote();
-				session.setAttribute("quote", inspire);
-				modelAndView.addObject("list", inspire);
-			} else {
-				modelAndView.addObject("list", quote);
-			}
 		}
 		return modelAndView;
 	}
@@ -119,28 +111,7 @@ public class PositiveController {
 
 		User user = (User) session.getAttribute("user");
 		ModelAndView mv = new ModelAndView("showposts");
-		if (quote == null) {
-			QuoteOfDay inspire = apiService.getQuote();
-			session.setAttribute("quote", inspire);
-			mv.addObject("list", inspire);
-		} else {
-			mv.addObject("list", quote);
-		}
-		List<Post> posts = postRepo.findByUser(user);
-		Map<String, ToneSummary> toneSummaryMap = new HashMap<>();
-		for (Post post : posts) {
-			ToneSummary toneSummary = null;
-			if (toneSummaryMap.containsKey(post.getMaxTone())) {
-				toneSummary = toneSummaryMap.get(post.getMaxTone());
-			} else {
-				toneSummary = new ToneSummary(post.getMaxTone());
-			}
-			toneSummary.incrementCount();
-			toneSummary.addToScore(post.getMaxScore());
-			toneSummaryMap.put(post.getMaxTone(), toneSummary);
-		}
-		mv.addObject("toneSummaries", toneSummaryMap.values());
-		loadPage(mv, user);
+		loadPage(mv, user, quote);
 		return mv;
 	}
 
@@ -151,7 +122,6 @@ public class PositiveController {
 		User user = (User) session.getAttribute("user");
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
-		System.out.println(tones);
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			redir.addFlashAttribute("postError", "It doesn't sound positive. Please post again.");
 		} else if (tones.isEmpty()) {
@@ -172,12 +142,37 @@ public class PositiveController {
 			post.setRating(0);
 			postRepo.save(post);
 		}
+		session.setAttribute("user", userRepo.findByName(user.getName()));
 		return new ModelAndView("redirect:/posts");
 	}
 
-	private void loadPage(ModelAndView mv, User user) {
+	private void loadPage(ModelAndView mv, User user, QuoteOfDay quote) {
 
-		mv.addObject("posts", postRepo.findAllByOrderByCreatedDesc());
+		// loading quote
+		if (quote == null) {
+			QuoteOfDay inspire = apiService.getQuote();// TODO: failing sometimes
+			session.setAttribute("quote", inspire);
+		}
+		// ---------------------------------------------//
+		// loading not followed users
+		user = userRepo.findByName(user.getName());
+		List<User> otherUsers = userRepo.findAll();
+		otherUsers.remove(user);
+		otherUsers.removeAll(user.getFollows());
+		mv.addObject("otherUsers", otherUsers);
+		// --------------------------------------------//
+		// loading posts for followed users and self
+		List<Post> postsToDisplay = postRepo.findAllByOrderByCreatedDesc();
+		List<Post> postsToRemove = new ArrayList<>();
+		for (Post post : postsToDisplay) {
+			if (!post.getUser().equals(user) && !user.getFollows().contains(post.getUser())) {
+				postsToRemove.add(post);
+			}
+		}
+		postsToDisplay.removeAll(postsToRemove);
+		mv.addObject("posts", postsToDisplay);
+		// --------------------------------------------//
+		// loading tone analysis report for self
 		List<Post> posts = postRepo.findByUser(user);
 		Map<String, ToneSummary> toneSummaryMap = new HashMap<>();
 		for (Post post : posts) {
