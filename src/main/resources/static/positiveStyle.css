@@ -52,9 +52,10 @@ label {
 }
 
 ::-webkit-input-placeholder {
-	padding-top: 15%;
+	padding-top: 5%;
 	text-align: center;
 }
+
 
 #UserTransBox {
 	background: rgba(255, 255, 255, 0.8);
@@ -96,6 +97,13 @@ label {
 	margin-top: 3%;
 	width: 400px;
 	height: 200px;
+}
+
+#editMoveOver {
+	
+	margin-top: 3%;
+	margin-left: 25%; 
+	
 }
 
 #WelMoveDown {
@@ -163,4 +171,8 @@ hr {
 
 #commentForm {
 	margin-top: 40px;
+}
+
+#rating{
+	display: inline; 
 }
