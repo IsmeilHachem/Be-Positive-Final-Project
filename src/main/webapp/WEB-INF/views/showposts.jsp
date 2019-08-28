@@ -152,6 +152,7 @@
                         <c:forEach var="comment" items="${post.getComments()}">
                             <div class="commentDiv">
                                 <p>${comment.getDescription()}</p>
+                                <a href="/deletecomment?id=${comment.getCommentId()}">Delete</a>
                             </div>
                         </c:forEach>
                     </div>

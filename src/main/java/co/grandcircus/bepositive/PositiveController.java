@@ -270,6 +270,12 @@ public class PositiveController {
 
 	}
 
+	@RequestMapping("/deletecomment")
+	public ModelAndView removeComment(@RequestParam("id") Integer commentId) {
+		commentRepo.deleteById(commentId);
+		return new ModelAndView("redirect:/posts");
+	}
+
 	@RequestMapping("/editpost")
 	public ModelAndView showEdit(@RequestParam("id") Integer postId) {
 		ModelAndView mv = new ModelAndView("editpost");
