@@ -14,6 +14,7 @@
     rel="stylesheet">
 <link rel="stylesheet"
     href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >    
 <title>B+ve</title>
 <style type="text/css">
 .postDiv {
@@ -50,7 +51,7 @@
 </head>
 <!-- style="background-color: #ccc" -->
 <body id="mainPageBG">
-    <nav class="navbar navbar-dark" style="background-color: darkblue;">
+    <nav class="navbar navbar-dark" style="background-color: darkblue; font-style: italic; ">
         <span class="navbar-brand mb-0 h1">Welcome ${user.getName()}</span>
         <c:if test="${sessionScope.user!= null}">
             <h4 id="logout">
@@ -66,17 +67,20 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3" id="quoMoveDown">
+            <div id="quoteBorder">
                 <h2>Quote</h2>
+                 <hr id="hrMovedown" />
                 <blockquote class="blockquote">
                     <p>${quote.quoteText}</p>
                     <p>- ${quote.quoteAuthor}</p>
                 </blockquote>
-				<hr />
-				<h2>Follow Others to see their posts</h2>
-				<table>
+             </div>   
+				
+				<h2 id="followBanner">Follow Others to see their posts</h2>
+				<table id="followOthers">
 					<c:forEach var="otherUser" items="${otherUsers}">
 						<tr>
-							<td><a href="">${otherUser.getFirstName()}, ${otherUser.getLastName()}</a></td>
+							<td> <a href="">${otherUser.getFirstName()} ${otherUser.getLastName()}</a></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -128,8 +132,8 @@
                             <form action="/createcomments" method="post">
                                 <div>
                                     <input type="hidden" name="postId" value="${post.getPostId()}" />
-                                    <a href="/deletepost?id=${post.getPostId()}">Delete</a>
-                                    <a href= "/editpost?id=${post.getPostId()}">Edit</a>
+                                    <a href="/deletepost?id=${post.getPostId()}"><i class="fas fa-trash"></i></a> 
+                                    <a href= "/editpost?id=${post.getPostId()}"><i class="fas fa-edit"></i></a>
 
                                     <input
                                         type=text name="comment" style="width: 100%"
@@ -151,8 +155,9 @@
                         </div>
                         <c:forEach var="comment" items="${post.getComments()}">
                             <div class="commentDiv">
-                                <p>${comment.getDescription()}</p>
-                                <a href="/deletecomment?id=${comment.getCommentId()}">Delete</a>
+                            	 <a href="/deletecomment?id=${comment.getCommentId()}"><i class="fas fa-trash"></i></a>
+                                <p id="commentDes">${comment.getDescription()}</p>
+                               
                             </div>
                         </c:forEach>
                     </div>
