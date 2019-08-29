@@ -165,16 +165,17 @@
 									class="fas fa-trash"></i></a>
 							</div>
 							<div style="padding-top: 5px;">
-								<p id="rating"><strong>${post.rating}</strong></p>
+								<p id="rating">
+									<strong>${post.rating}</strong>
+								</p>
 								<a href="/createposts/upvote?id=${post.getPostId()}"> <img
-									src="1338-thumbs-up-sign.png" alt="Up" height=20
-									width=20 /></a>
+									src="1338-thumbs-up-sign.png" alt="Up" height=20 width=20 /></a>
 							</div>
 						</div>
 						<c:if test="${not empty post.getImageId()}">
 							<!-- add version then / then id -->
 							<cl:image
-								src="http://res.cloudinary.com/bepositive/image/upload/w_250,h_250/${post.getVersion()}/${post.getImageId()}" />
+								src="http://res.cloudinary.com/bepositive/image/upload/w_250,h_250,c_thumb,g_face/${post.getVersion()}/${post.getImageId()}" />
 						</c:if>
 						<div id="commentForm">
 							<form action="/createcomments" method="post">
