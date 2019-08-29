@@ -277,11 +277,11 @@ public class PositiveController {
 
 		postRepo.deleteById(postId);
 		return new ModelAndView("redirect:/posts");
-
 	}
 
 	@RequestMapping("/deletecomment")
 	public ModelAndView removeComment(@RequestParam("id") Integer commentId) {
+
 		commentRepo.deleteById(commentId);
 		return new ModelAndView("redirect:/posts");
 	}
@@ -343,61 +343,6 @@ public class PositiveController {
 		return followUnfollow(followUserId, user, false);
 	}
 
-	// This will run one time when the application starts up to configure cloudinary.
-
-    @PostConstruct
-    public void init() {
-        Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", "bepositive");
-        config.put("api_key", "449879741459621");
-        config.put("api_secret", cloudinaryKey);
-        Cloudinary cloudinary = new Cloudinary(config);
-        Singleton.registerCloudinary(cloudinary);
-    }
-    @RequestMapping("/uploadphoto")
-    public ModelAndView upload() {
-        return new ModelAndView("cloudinary/direct_upload_form");
-    }
-    @PostMapping("/uploadphoto")
-    public ModelAndView showPhoto(
-            RedirectAttributes redir, String imageId, String version,
-            @RequestParam("preloadedFile") String preloadedFile) throws Exception {
-        Post post = new Post();
-        User user = (User) session.getAttribute("user");
-        post.setUser(user);
-        post.setCreated(new Date());
-
-        Cloudinary cloudinary = Singleton.getCloudinary();
-        System.out.println(post);
-        post.getImageId();
-        post.getVersion();
-        System.out.println("preloadedFile is " + preloadedFile);
-        String[] array = preloadedFile.split("/");
-        for (int i = 0; i < array.length; i++) {
-            System.out.println(array[i]);
-        }
-        String[] id = array[3].split("#");
-        System.out.println(id[0]);
-        imageId = id[0];
-        version = array[2];
-
-
-        if (imageId != null || version != null) {
-            post.setImageId(imageId);
-            post.setVersion(version);
-            post.setMaxScore(0.5);
-			post.setMaxTone("Tentative");
-
-        }
-
-        //cloudinary.url().type("fetch").imageTag("http://res.cloudinary.com/bepositive/" + version + "/" + imageId + "/fetch");
-        postRepo.save(post);
-
-
-        return new ModelAndView("redirect:/posts");
-
-    }
-
 	private ModelAndView followUnfollow(Integer followUserId, User user, boolean follow) {
 
 		User currentUser = userRepo.findByUserId(user.getUserId());
@@ -413,4 +358,55 @@ public class PositiveController {
 		return new ModelAndView("redirect:/posts");
 	}
 
+	// This will run one time when the application starts up to configure
+	// cloudinary.
+	@PostConstruct
+	public void init() {
+
+		Map<String, String> config = new HashMap<>();
+		config.put("cloud_name", "bepositive");
+		config.put("api_key", "449879741459621");
+		config.put("api_secret", cloudinaryKey);
+		Cloudinary cloudinary = new Cloudinary(config);
+		Singleton.registerCloudinary(cloudinary);
+	}
+
+	@RequestMapping("/uploadphoto")
+	public ModelAndView upload() {
+
+		return new ModelAndView("cloudinary/direct_upload_form");
+	}
+
+	@PostMapping("/uploadphoto")
+	public ModelAndView showPhoto(RedirectAttributes redir, String imageId, String version,
+			@RequestParam("preloadedFile") String preloadedFile) throws Exception {
+
+		Post post = new Post();
+		User user = (User) session.getAttribute("user");
+		post.setUser(user);
+		post.setCreated(new Date());
+		Cloudinary cloudinary = Singleton.getCloudinary();
+		System.out.println(post);
+		post.getImageId();
+		post.getVersion();
+		System.out.println("preloadedFile is " + preloadedFile);
+		String[] array = preloadedFile.split("/");
+		for (int i = 0; i < array.length; i++) {
+			System.out.println(array[i]);
+		}
+		String[] id = array[3].split("#");
+		System.out.println(id[0]);
+		imageId = id[0];
+		version = array[2];
+		if (imageId != null || version != null) {
+			post.setImageId(imageId);
+			post.setVersion(version);
+			post.setMaxScore(0.5);
+			post.setMaxTone("Tentative");
+		}
+		// cloudinary.url().type("fetch").imageTag("http://res.cloudinary.com/bepositive/"
+		// + version + "/" + imageId + "/fetch");
+		postRepo.save(post);
+		return new ModelAndView("redirect:/posts");
+	}
 }
