@@ -47,8 +47,8 @@
 				<br>
 				<div class="form_line">
 					<div class="form_controls">
-						<input type="submit" value="Post" class="btn btn-secondary btn-sm">
-						<a href="/posts" class="btn btn-secondary btn-sm">Back</a>
+						<input type="submit" value="Post" class="btn btn-secondary">
+						<a href="/posts" class="btn btn-secondary">Back</a>
 					</div>
 				</div>
 			</form>
