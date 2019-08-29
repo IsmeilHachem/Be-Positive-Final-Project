@@ -135,7 +135,7 @@
                         <p>${post.getDescription()}</p>
                         <c:if test="${not empty post.getImageId()}">
                         <!-- add version then / then id -->
-							<cl:image src="http://res.cloudinary.com/bepositive/image/upload/v${post.getVersion()}/${post.getImageId()}.jpg"/>
+							<cl:image src="http://res.cloudinary.com/bepositive/image/upload/w_250,h_250/${post.getVersion()}/${post.getImageId()}"/>
                         </c:if>
                         <div id="commentForm">
                             <form action="/createcomments" method="post">

@@ -37,7 +37,7 @@ import co.grandcircus.bepositive.entities.User;
 @Controller
 public class PositiveController {
 	
-	@Value("{cloudinaryKey}")
+	@Value("${cloudinaryKey}")
 	private String cloudinaryKey;
 
 	@Autowired
@@ -353,7 +353,7 @@ public class PositiveController {
     }
     @PostMapping("/uploadphoto")
     public ModelAndView showPhoto(
-            RedirectAttributes redir, Object customCorsLocation, String imageId, String version,
+            RedirectAttributes redir, String imageId, String version,
             @RequestParam("preloadedFile") String preloadedFile) throws Exception {
         Post post = new Post();
         User user = (User) session.getAttribute("user");
@@ -375,14 +375,17 @@ public class PositiveController {
         version = array[2];
         
         
-        if (imageId == null || version == null) {
+        if (imageId != null || version != null) {
             post.setImageId(imageId);
             post.setVersion(version);
-            System.out.println(post);
+            post.setMaxScore(0.5);
+			post.setMaxTone("Tentative");
+			
         }
         
-        cloudinary.url().type("fetch").imageTag("http://res.cloudinary.com/bepositive/" + version + "/" + imageId + "/fetch");
+        //cloudinary.url().type("fetch").imageTag("http://res.cloudinary.com/bepositive/" + version + "/" + imageId + "/fetch");
         postRepo.save(post);
+        
         
         return new ModelAndView("redirect:/posts");
         
