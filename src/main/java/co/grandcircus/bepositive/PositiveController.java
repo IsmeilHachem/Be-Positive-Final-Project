@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -144,15 +145,13 @@ public class PositiveController {
 		}
 		session.setAttribute("user", userRepo.findByName(user.getName()));
 		return new ModelAndView("redirect:/posts");
-
 	}
 
 	private void loadPage(ModelAndView mv, User user, QuoteOfDay quote) {
 
 		// loading quote
 		if (quote == null) {
-			QuoteOfDay inspire = apiService.getQuote();// TODO: failing sometimes
-			session.setAttribute("quote", inspire);
+			session.setAttribute("quote", apiService.getQuote());
 		}
 		// ---------------------------------------------//
 		// loading not followed users
@@ -161,6 +160,9 @@ public class PositiveController {
 		otherUsers.remove(user);
 		otherUsers.removeAll(user.getFollows());
 		mv.addObject("otherUsers", otherUsers);
+		// ---------------------------------------------//
+		// loading who I am following
+		mv.addObject("follows", user.getFollows());
 		// --------------------------------------------//
 		// loading posts for followed users and self
 		List<Post> postsToDisplay = postRepo.findAllByOrderByCreatedDesc();
@@ -247,7 +249,7 @@ public class PositiveController {
 	@RequestMapping("/createposts/upvote")
 	public ModelAndView upvote(@RequestParam("id") Integer postId, @SessionAttribute("user") User user) {
 
-		ModelAndView modelAndView = new ModelAndView("showposts");
+//		ModelAndView modelAndView = new ModelAndView("showposts");
 		Post posts = postRepo.findById(postId).get();
 		posts.setRating(posts.getRating() + 1);
 		postRepo.save(posts);
@@ -267,11 +269,11 @@ public class PositiveController {
 
 		postRepo.deleteById(postId);
 		return new ModelAndView("redirect:/posts");
-
 	}
 
 	@RequestMapping("/editpost")
 	public ModelAndView showEdit(@RequestParam("id") Integer postId) {
+
 		ModelAndView mv = new ModelAndView("editpost");
 		mv.addObject("post", postRepo.findById(postId).orElse(null));
 		mv.addObject("title", "Edit post");
@@ -281,22 +283,16 @@ public class PositiveController {
 	@PostMapping("/editpost")
 	public ModelAndView edit(@RequestParam("postId") Integer postId, @RequestParam("post") String text,
 			RedirectAttributes redir) {
-		// Post post = new Post();
+
 		User user = (User) session.getAttribute("user");
-		/* ModelAndView mv = new ModelAndView(); */
 		DocumentResponse response = apiService.search(text);
 		List<Tone> tones = response.getDocTone().getTones();
-
 		Post post = postRepo.findByPostId(postId);
-
 		if (isNotAcceptableTone(tones) || WordFilter.badwordfinder(text)) {
 			ModelAndView mv = new ModelAndView("editpost");
 			mv.addObject("postError", "It doesn't sound positive. Please post again.");
-
 			return mv;
-
 		} else if (tones.isEmpty() || (tones == null)) {
-
 			post.setMaxScore(0.5);
 			post.setMaxTone("Tentative");
 			post.setDescription(text);
@@ -304,8 +300,6 @@ public class PositiveController {
 			post.setCreated(new Date());
 			post.setRating(0);
 			postRepo.save(post);
-//			post.setDescription(description);
-
 		} else {
 			Tone toneWithHighestScore = getToneWithHighestScore(tones);
 			post.setMaxScore(toneWithHighestScore.getScore());
@@ -315,15 +309,36 @@ public class PositiveController {
 			post.setCreated(new Date());
 			post.setRating(0);
 			postRepo.save(post);
-
 		}
-
 		return new ModelAndView("redirect:/posts");
-
 	}
 
-	private void addObject(String string, String string2) {
-		// TODO Auto-generated method stub
+	@RequestMapping("/follow")
+	public ModelAndView follow(@RequestParam("followUserId") Integer followUserId,
+			@SessionAttribute("user") User user) {
 
+		return followUnfollow(followUserId, user, true);
+	}
+
+	@RequestMapping("/unfollow")
+	public ModelAndView unfollow(@RequestParam("followUserId") Integer followUserId,
+			@SessionAttribute("user") User user) {
+
+		return followUnfollow(followUserId, user, false);
+	}
+
+	private ModelAndView followUnfollow(Integer followUserId, User user, boolean follow) {
+
+		User currentUser = userRepo.findByUserId(user.getUserId());
+		User followUser = userRepo.findByUserId(followUserId);
+		Set<User> follows = currentUser.getFollows();
+		if (follow) {
+			follows.add(followUser);
+		} else {
+			follows.remove(followUser);
+		}
+		currentUser.setFollows(follows);
+		userRepo.save(currentUser);
+		return new ModelAndView("redirect:/posts");
 	}
 }
