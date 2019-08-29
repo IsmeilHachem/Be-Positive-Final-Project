@@ -45,7 +45,7 @@
 			<input type="hidden" name="postId" value="${post.getPostId()}" />
 			<div>
 				<textarea id="myTextArea" rows="4" cols="65" name="post"
-					placeholder="${post.getDescription()}" required ></textarea>
+					 required >${post.getDescription()}</textarea>
 			</div>
 			<div id="button">
 				<input type="submit" value="Post" class="btn btn-warning">

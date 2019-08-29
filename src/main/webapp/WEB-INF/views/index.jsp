@@ -36,7 +36,7 @@ form {
 <body class="bodyIndex">
 	<div id="centerLogin">
 		<p id="userWarning">
-			<c:if test="${not empty user}">${user} is not a valid user</c:if>
+			${error} 
 		</p>
 		<h1>Welcome to The World of Positivity!</h1>
 		<form action="/login" method="post" id="loginCenter">

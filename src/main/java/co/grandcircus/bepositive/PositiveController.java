@@ -107,10 +107,21 @@ public class PositiveController {
 			HttpSession session, @SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
 		ModelAndView modelAndView = null;
-		User user = userRepo.findByName(userName);
-		if (ObjectUtils.isEmpty(user)) {
-			modelAndView = new ModelAndView("index");
-			modelAndView.addObject("user", userName);
+		User user1 = userRepo.findByName(userName);
+		User user = userRepo.findByNameAndPassword(userName, password);
+		if (ObjectUtils.isEmpty(user1)) {
+			ModelAndView mv = new ModelAndView("index");
+			mv.addObject("error", "Invalid user");
+			return mv;
+		}
+
+		else if (ObjectUtils.isEmpty(user)) {
+			// modelAndView = new ModelAndView("index");
+			// modelAndView.addObject("user", userName);
+			// } else if (user == null) {
+			ModelAndView mv = new ModelAndView("index");
+			mv.addObject("error", "Invalid password");
+			return mv;
 		} else {
 			modelAndView = new ModelAndView("showposts");
 			loadPage(modelAndView, user, quote);
