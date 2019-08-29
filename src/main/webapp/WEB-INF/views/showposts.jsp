@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://cloudinary.com/jsp/taglib" prefix="cl"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,8 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <title>B+ve</title>
 <style type="text/css">
 .postDiv {
@@ -55,57 +58,59 @@
 }
 </style>
 </head>
-<!-- style="background-color: #ccc" -->
 <body id="mainPageBG">
-	<nav class="navbar navbar-dark" style="background-color: darkblue;">
+	<nav class="navbar navbar-dark"
+		style="background-color: darkblue; font-style: italic;">
 		<span class="navbar-brand mb-0 h1">Welcome ${user.getName()}</span>
 		<c:if test="${sessionScope.user!= null}">
 			<h4 id="logout">
 				<a href="/logout">Logout</a>
 			</h4>
 		</c:if>
-		<!-- <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search"
-                placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form> -->
 	</nav>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-3" id="quoMoveDown">
 				<c:if test="${not empty quote}">
-					<h2>Quote</h2>
-					<blockquote class="blockquote">
-						<p>${quote.quoteText}</p>
-						<p>- ${quote.quoteAuthor}</p>
-					</blockquote>
-				<hr />
+					<div id="quoteBorder">
+						<h2>Quote</h2>
+						<hr id="hrMovedown" />
+						<blockquote class="blockquote">
+							<p>${quote.quoteText}</p>
+							<p>- ${quote.quoteAuthor}</p>
+						</blockquote>
+					</div>
 				</c:if>
-				<table style="width: 100%;">
-					<tr>
-						<td colspan="2"><h2>Following</h2></td>
-					</tr>
-					<c:forEach var="follow" items="${follows}">
+				<table id="followOthers" style="width: 100%;">
+					<c:if test="${not empty follows}">
 						<tr>
-							<td>${follow.getFirstName()}${follow.getLastName()}</td>
-							<td class="btn btn-warning btn-sm"><a
-								href="/unfollow?followUserId=${follow.getUserId()}">
-									UnFollow</a></td>
+							<td colspan="2"><h2 id="followBanner">Following</h2></td>
 						</tr>
-					</c:forEach>
-					<tr>
-						<td colspan="2"><hr /></td>
-					</tr>
-					<tr>
-						<td colspan="2"><h2>Follow Them</h2></td>
-					</tr>
-					<c:forEach var="otherUser" items="${otherUsers}">
+						<c:forEach var="follow" items="${follows}">
+							<tr>
+								<td>${follow.getFirstName()}${follow.getLastName()}</td>
+								<td class="btn btn-warning btn-sm"><a
+									href="/unfollow?followUserId=${follow.getUserId()}">
+										UnFollow</a></td>
+							</tr>
+						</c:forEach>
 						<tr>
-							<td>${otherUser.getFirstName()}${otherUser.getLastName()}</td>
-							<td class="btn btn-warning btn-sm"><a
-								href="/follow?followUserId=${otherUser.getUserId()}"> Follow</a></td>
+							<td colspan="2"><hr id="hrMovedown" /></td>
 						</tr>
-					</c:forEach>
+					</c:if>
+					<c:if test="${not empty otherUsers}">
+						<tr>
+							<td colspan="2"><h2 id="followBanner">Follow Them</h2></td>
+						</tr>
+						<c:forEach var="otherUser" items="${otherUsers}">
+							<tr>
+								<td>${otherUser.getFirstName()}${otherUser.getLastName()}</td>
+								<td class="btn btn-warning btn-sm"><a
+									href="/follow?followUserId=${otherUser.getUserId()}">
+										Follow</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
 				</table>
 			</div>
 			<div class="col-sm-6">
@@ -120,6 +125,7 @@
 						</div>
 						<div id="button">
 							<input type="submit" value="Post" class="btn btn-warning">
+							<a href="/uploadphoto">Upload Photo</a>
 						</div>
 					</form>
 				</div>
@@ -151,15 +157,20 @@
 						</table>
 						<hr />
 						<p>${post.getDescription()}</p>
+						<c:if test="${not empty post.getImageId()}">
+							<!-- add version then / then id -->
+							<cl:image
+								src="http://res.cloudinary.com/bepositive/image/upload/w_250,h_250/${post.getVersion()}/${post.getImageId()}" />
+						</c:if>
 						<div id="commentForm">
 							<form action="/createcomments" method="post">
 								<div>
 									<input type="hidden" name="postId" value="${post.getPostId()}" />
 									<a href="/deletepost?id=${post.getPostId()}"
-										class="glyphicon glyphicon-trash">Delete</a> <a
-										href="/editpost?id=${post.getPostId()}">Edit</a> <input
-										type=text name="comment" style="width: 100%"
-										placeholder="Comment here!" required>
+										class="glyphicon glyphicon-trash"><i class="fas fa-trash"></i></a>
+									<a href="/editpost?id=${post.getPostId()}"><i
+										class="fas fa-edit"></i></a> <input type=text name="comment"
+										style="width: 100%" placeholder="Comment here!" required>
 								</div>
 								<div id="button">
 									<p id="rating">${post.rating}</p>
@@ -172,32 +183,37 @@
 						</div>
 						<c:forEach var="comment" items="${post.getComments()}">
 							<div class="commentDiv">
-								<p>${comment.getDescription()}</p>
+								<a href="/deletecomment?id=${comment.getCommentId()}"><i
+									class="fas fa-trash"></i></a>
+								<pid="commentDes">${comment.getDescription()}</p>
 							</div>
+							<a href="/deletecomment?id=${comment.getCommentId()}">Delete</a>
 						</c:forEach>
 					</div>
 				</c:forEach>
 			</div>
 			<div class="col-sm-3" id="quoMoveDown">
-				<table style="width: 100%">
-					<tr>
-						<td colspan=2><h2>User Tone Analysis Report</h2></td>
-					</tr>
-					<c:forEach var="toneSummary" items="${toneSummaries}">
+				<c:if test="${not empty toneSummaries}">
+					<table style="width: 100%">
 						<tr>
-							<td>${toneSummary.getTone()}</td>
-							<td style="width: 100px"><c:set var="tonePercent"
-									value="${toneSummary.getAverage() * 100}" />
-								<div class="progress">
-									<div class="progress-bar tone-${toneSummary.getTone()}"
-										role="progressbar" style="width:${tonePercent}%"
-										aria-valuenow="${tonePercent}" aria-valuemin="0"
-										aria-valuemax="100"></div>
-								</div></td>
+							<td colspan=2><h2>User Tone Analysis Report</h2></td>
 						</tr>
-					</c:forEach>
-				</table>
-				<hr />
+						<c:forEach var="toneSummary" items="${toneSummaries}">
+							<tr>
+								<td>${toneSummary.getTone()}</td>
+								<td style="width: 100px"><c:set var="tonePercent"
+										value="${toneSummary.getAverage() * 100}" />
+									<div class="progress">
+										<div class="progress-bar tone-${toneSummary.getTone()}"
+											role="progressbar" style="width:${tonePercent}%"
+											aria-valuenow="${tonePercent}" aria-valuemin="0"
+											aria-valuemax="100"></div>
+									</div></td>
+							</tr>
+						</c:forEach>
+					</table>
+					<hr id="hrMovedown" />
+				</c:if>
 				<jsp:include page="glossary.jsp" />
 			</div>
 		</div>

@@ -57,6 +57,7 @@ label {
 }
 
 
+
 #UserTransBox {
 	background: rgba(255, 255, 255, 0.8);
 	max-width: 100%;
@@ -169,10 +170,42 @@ hr {
 		rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 }
 
+#hrMovedown{
+	border: 0;
+	height: 2px;
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+	margin: 5px; 	
+}
+}
+
+
 #commentForm {
 	margin-top: 40px;
+}
+
+#commentDes{
+	display: inline; 
 }
 
 #rating{
 	display: inline; 
 }
+
+#followOthers{
+	margin-left: 20px; 
+}
+
+#followBanner{
+	margin-top: 40px; 
+}
+
+#quoteBorder {
+	border: 10px solid darkblue;
+	padding: 20px; 
+	background-color: #fff;
+}
+
+
+
+
