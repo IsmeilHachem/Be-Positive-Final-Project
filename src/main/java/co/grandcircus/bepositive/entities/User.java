@@ -34,6 +34,9 @@ public class User {
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
 
+	@Column(nullable = false)
+	private String password;
+
 	// https://medium.com/skillhive/how-to-retrieve-a-parent-field-from-a-child-entity-in-a-one-to-many-bidirectional-jpa-relationship-4b3cd707bfb7
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Post> posts;
@@ -87,6 +90,14 @@ public class User {
 	public void setName(String name) {
 
 		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public List<Post> getPosts() {

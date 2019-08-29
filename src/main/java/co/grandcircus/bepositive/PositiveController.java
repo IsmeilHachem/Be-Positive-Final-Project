@@ -70,7 +70,8 @@ public class PositiveController {
 	@PostMapping("/submitsignup")
 	public ModelAndView submitSignup(@RequestParam(value = "name", required = true) String name,
 			@RequestParam(value = "firstname", required = true) String firstName,
-			@RequestParam(value = "lastname", required = true) String lastName) {
+			@RequestParam(value = "lastname", required = true) String lastName,
+			@RequestParam(value = "password", required = true) String password) {
 
 		ModelAndView modelAndView = null;
 		// 1. Add to database
@@ -83,11 +84,15 @@ public class PositiveController {
 		} else if (userRepo.findByName(name) != null) {
 			modelAndView = new ModelAndView("signup");
 			modelAndView.addObject("error", "Username already exists.");
+		} else if (password == "") {
+			modelAndView = new ModelAndView("signup");
+			modelAndView.addObject("error", "Please enter password");
 		} else {
 			User user = new User();
 			user.setName(name);
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
+			user.setPassword(password);
 			userRepo.save(user);
 			// 2. Add to session
 			session.setAttribute("user", user);
@@ -97,8 +102,8 @@ public class PositiveController {
 	}
 
 	@PostMapping("/login")
-	public ModelAndView login(@RequestParam("userName") String userName, HttpSession session,
-			@SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
+	public ModelAndView login(@RequestParam("userName") String userName, @RequestParam("password") String password,
+			HttpSession session, @SessionAttribute(name = "quote", required = false) QuoteOfDay quote) {
 
 		ModelAndView modelAndView = null;
 		User user = userRepo.findByName(userName);

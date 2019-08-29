@@ -40,8 +40,11 @@ form {
 		</p>
 		<h1>Welcome to The World of Positivity!</h1>
 		<form action="/login" method="post" id="loginCenter">
-			<input type="text" name="userName" placeholder="User name"> <input
-				type="submit" value="Login" class="btn btn-secondary btn-sm">
+			<input type="text" name="userName" placeholder="User name">
+			 
+			<input type="password" name="password" placeholder="Password" required />
+	
+			<input type="submit" value="Login" class="btn btn-secondary btn-sm">
 		</form>
 		<form action="/signupUser" method="post">
 			<input type="submit" value="SignUp" class="btn btn-secondary btn-sm">

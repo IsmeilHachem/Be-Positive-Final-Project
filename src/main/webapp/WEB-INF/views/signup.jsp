@@ -40,6 +40,10 @@ table, tr, td {
 					<td><input name="lastname" /></td>
 				</tr>
 				<tr>
+					<td><label>Password</label></td>
+					<td><input type= "password" name = "password" required /></td>
+				</tr>
+				<tr>
 					<td colspan="2" align="center">
 						<button type="submit" class="btn btn-secondary btn-sm">Sign Up</button>
 						<a href ="/" class="btn btn-secondary btn-sm">Home</a>
