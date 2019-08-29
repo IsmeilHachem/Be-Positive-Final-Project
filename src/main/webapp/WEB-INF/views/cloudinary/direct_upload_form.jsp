@@ -6,17 +6,23 @@
 <%@taglib uri="http://cloudinary.com/jsp/taglib" prefix="cl"%>
 <html>
 <head>
-<title>Photo Album</title>
-<link type="text/css" rel="stylesheet" media="all"
-	href="<c:url value="/stylesheets/application.css"/>">
+<title>Photo Album</title> 
+<%-- <link type="text/css" rel="stylesheet" media="all"
+	href="<c:url value="/stylesheets/application.css"/>"> --%>
 <link rel="shortcut icon">
+<link rel="stylesheet" href="positiveStyle.css" />
+<link
+	href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap"
+	rel="stylesheet">
+ <link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 </head>
 <body>
 
-	<div class="content">
+	<div class="content" align = "center">
 		<div id="direct_upload">
-			<h1>New Photo</h1>
+			<h1 style="font-size: 70px">New Photo</h1>
 			<form method="post" enctype="multipart/form-data">
 				<div class="form_line">
 					<label>Image:</label>
@@ -38,10 +44,11 @@
 						<div class="preview"></div>
 					</div>
 				</div>
+				<br>
 				<div class="form_line">
 					<div class="form_controls">
-						<input type="submit" value="Post" class="btn btn-warning">
-						<a href="/posts" type="submit" class="btn btn-warning">Back</a>
+						<input type="submit" value="Post" class="btn btn-secondary btn-sm">
+						<a href="/posts" class="btn btn-secondary btn-sm">Back</a>
 					</div>
 				</div>
 			</form>
@@ -49,8 +56,8 @@
 
 		<%-- <a href="<c:url value="/posts"/>" class="back_link">Back to Homepage</a>
  --%>
-		<div id="info"></div>
-
+<!-- 		<div id="info"></div>
+ -->
 		<cl:jsinclude />
 
 		<!-- Configure Cloudinary jQuery plugin -->

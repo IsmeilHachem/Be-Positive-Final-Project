@@ -174,9 +174,11 @@ public class PositiveController {
 	private void loadPage(ModelAndView mv, User user, QuoteOfDay quote) {
 
 		// loading quote
+		
 		if (quote == null) {
 			session.setAttribute("quote", apiService.getQuote());
 		}
+		
 		// ---------------------------------------------//
 		// loading not followed users
 		user = userRepo.findByName(user.getName());
@@ -420,8 +422,7 @@ public class PositiveController {
 			post.setMaxScore(0.5);
 			post.setMaxTone("Tentative");
 		}
-		// cloudinary.url().type("fetch").imageTag("http://res.cloudinary.com/bepositive/"
-		// + version + "/" + imageId + "/fetch");
+		
 		postRepo.save(post);
 		return new ModelAndView("redirect:/posts");
 	}

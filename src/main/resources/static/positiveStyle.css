@@ -85,7 +85,7 @@ label {
 }
 
 #buttonLook:hover {
-	background-color: #3dd8ff;
+	background-color: #4abaff;
 	color: white;
 }
 
@@ -208,3 +208,20 @@ hr {
 .actionDiv {
 	float:right
 }
+
+#direct_upload{	
+	background-color: #287fd1;
+}
+
+.content{
+	font-size: 20px;
+  padding: 325px 0px;
+  border: 3px solid green;
+  text-align: center;
+  background-color: #287fd1;
+}
+
+
+
+
+
