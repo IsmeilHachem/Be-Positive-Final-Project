@@ -164,6 +164,12 @@
 									href="/deletepost?id=${post.getPostId()}"><i
 									class="fas fa-trash"></i></a>
 							</div>
+							<div style="padding-top: 5px;">
+								<p id="rating"><strong>${post.rating}</strong></p>
+								<a href="/createposts/upvote?id=${post.getPostId()}"> <img
+									src="1338-thumbs-up-sign.png" alt="Up" height=20
+									width=20 /></a>
+							</div>
 						</div>
 						<c:if test="${not empty post.getImageId()}">
 							<!-- add version then / then id -->
@@ -178,10 +184,7 @@
 										placeholder="Comment here!" required>
 								</div>
 								<div id="button">
-									<p id="rating">${post.rating}</p>
-									<a href="/createposts/upvote?id=${post.getPostId()}"> <img
-										src="1338-thumbs-up-sign.png" alt="Up" border=3 height=25
-										width=25 /></a> <input type="submit" value="Comment"
+									<input type="submit" value="Comment"
 										class="btn btn-warning btn-sm">
 								</div>
 							</form>
