@@ -57,7 +57,12 @@ public class ApiService {
 
 		String url = UriComponentsBuilder.fromHttpUrl("http://api.forismatic.com/api/1.0/")
 				.queryParam("method", "getQuote").queryParam("format", "json").queryParam("lang", "en").toUriString();
-		QuoteOfDay response = restTemplateQuote.getForObject(url, QuoteOfDay.class);
+		QuoteOfDay response = null;
+		try {
+			response = restTemplateQuote.getForObject(url, QuoteOfDay.class);
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+		}
 		return response;
 	}
 }

@@ -201,11 +201,10 @@ hr {
 }
 
 #quoteBorder {
-	border: 5px solid darkblue;
-	
+	border: 10px solid darkblue;
 	padding: 20px; 
+	background-color: #fff;
 }
-
-
-
-
+.actionDiv {
+	float:right
+}
