@@ -89,7 +89,7 @@
 						<c:forEach var="follow" items="${follows}">
 							<tr>
 								<td>${follow.getFirstName()}${follow.getLastName()}</td>
-								<td class="btn btn-warning btn-sm"><a
+								<td><a class="btn btn-warning btn-sm"
 									href="/unfollow?followUserId=${follow.getUserId()}">
 										UnFollow</a></td>
 							</tr>
@@ -105,7 +105,7 @@
 						<c:forEach var="otherUser" items="${otherUsers}">
 							<tr>
 								<td>${otherUser.getFirstName()}${otherUser.getLastName()}</td>
-								<td class="btn btn-warning btn-sm"><a
+								<td><a class="btn btn-warning btn-sm"
 									href="/follow?followUserId=${otherUser.getUserId()}">
 										Follow</a></td>
 							</tr>
