@@ -205,7 +205,6 @@ hr {
 	padding: 20px; 
 	background-color: #fff;
 }
-
-
-
-
+.actionDiv {
+	float:right
+}

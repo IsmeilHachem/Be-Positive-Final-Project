@@ -156,7 +156,15 @@
 							</th>
 						</table>
 						<hr />
-						<p>${post.getDescription()}</p>
+						<div style="padding-bottom: 5px;">
+							<p id="commentDes">${post.getDescription()}</p>
+							<div class="actionDiv">
+								<a href="/editpost?id=${post.getPostId()}"><i
+									class="fas fa-edit"></i></a> <a
+									href="/deletepost?id=${post.getPostId()}"><i
+									class="fas fa-trash"></i></a>
+							</div>
+						</div>
 						<c:if test="${not empty post.getImageId()}">
 							<!-- add version then / then id -->
 							<cl:image
@@ -166,11 +174,8 @@
 							<form action="/createcomments" method="post">
 								<div>
 									<input type="hidden" name="postId" value="${post.getPostId()}" />
-									<a href="/deletepost?id=${post.getPostId()}"
-										class="glyphicon glyphicon-trash"><i class="fas fa-trash"></i></a>
-									<a href="/editpost?id=${post.getPostId()}"><i
-										class="fas fa-edit"></i></a> <input type=text name="comment"
-										style="width: 100%" placeholder="Comment here!" required>
+									<input type=text name="comment" style="width: 100%"
+										placeholder="Comment here!" required>
 								</div>
 								<div id="button">
 									<p id="rating">${post.rating}</p>
@@ -183,11 +188,12 @@
 						</div>
 						<c:forEach var="comment" items="${post.getComments()}">
 							<div class="commentDiv">
-								<a href="/deletecomment?id=${comment.getCommentId()}"><i
-									class="fas fa-trash"></i></a>
-								<pid="commentDes">${comment.getDescription()}</p>
+								<p id="commentDes">${comment.getDescription()}</p>
+								<div class="actionDiv">
+									<a href="/deletecomment?id=${comment.getCommentId()}"><i
+										class="fas fa-trash"></i></a>
+								</div>
 							</div>
-							<a href="/deletecomment?id=${comment.getCommentId()}">Delete</a>
 						</c:forEach>
 					</div>
 				</c:forEach>
